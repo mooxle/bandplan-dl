@@ -1,0 +1,21 @@
+services:
+  web:
+    build: .
+    image: bandplan-dl:latest
+    container_name: bandplan-dl
+    ports:
+      - "${BANDPLAN_PORT:-8095}:8080"
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    init: true
+    tmpfs:
+      - /tmp:size=16m
+    mem_limit: 64m
+    pids_limit: 32
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8080/healthz"]
+      interval: 60s
+      timeout: 3s
+      retries: 3

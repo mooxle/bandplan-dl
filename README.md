@@ -26,6 +26,27 @@ python3 -m http.server 8770
 
 Danach <http://localhost:8770> öffnen. Zum Hosten reicht jeder statische Webserver (nginx, Forgejo/GitHub Pages, …); alle Pfade sind relativ.
 
+### Docker
+
+Ein schlankes Image auf Basis von `nginx-unprivileged` (läuft ohne root auf Port 8080) liefert nur `index.html` und `assets/` aus:
+
+```bash
+docker compose up -d --build
+```
+
+Danach läuft die Seite auf <http://localhost:8095>. Einen anderen Port setzt du mit `BANDPLAN_PORT=9000 docker compose up -d` oder in einer `.env`. Der Container ist gehärtet: read-only Dateisystem, keine Capabilities, 64 MB RAM. Er hat einen Healthcheck auf `/healthz`. Die Sicherheits-Header (u. a. CSP) stehen in `nginx.conf`. HTML, JS und CSS werden mit `Cache-Control: no-cache` ausgeliefert, damit ein neues Deploy sofort sichtbar ist.
+
+Ohne Compose geht es so:
+
+```bash
+docker build -t bandplan-dl .
+docker run -d --name bandplan-dl -p 8095:8080 --read-only --tmpfs /tmp bandplan-dl
+```
+
+Hinter einem Reverse Proxy (Traefik, Caddy, nginx) einfach auf Port 8080 des Containers zeigen.
+
+### Offline
+
 Ohne Internet funktioniert die Seite ebenfalls; nur die Webfonts (Archivo, Chivo Mono von Google Fonts) fallen dann auf Systemschriften zurück.
 
 ## Aufbau
@@ -37,6 +58,7 @@ Ohne Internet funktioniert die Seite ebenfalls; nur die Webfonts (Archivo, Chivo
 | `assets/app.js` | Rendering, Frequenz-Check, Zustand und Direktlinks |
 | `assets/app.css` | Styles inkl. Dark Mode und Druck |
 | `tools/validate.js` | Konsistenzprüfung der Daten |
+| `Dockerfile`, `nginx.conf`, `docker-compose.yml` | Container zum Deployen |
 | `docs/DATA.md` | Datenmodell, Quellen, bewusste Vereinfachungen |
 
 ## Daten pflegen
