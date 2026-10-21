@@ -28,6 +28,12 @@ for f in "$out"/assets/*.js "$out"/assets/*.css; do
   done
 done
 
+# Build-Stempel im Footer (ersetzt <!--BUILD--> in index.html): Commit und Datum, damit nach einem Deploy sichtbar ist,
+# welche Version läuft. Ohne Git (z. B. im Docker-Build, .git ist dort nicht im Kontext) nur das Datum.
+ref=$(git rev-parse --short HEAD 2>/dev/null || true)
+stamp="Stand: ${ref:+<span class=\"mono\">$ref</span> · }$(date -u +%d.%m.%Y)"
+sed "s#<!--BUILD-->#<div>$stamp</div>#" "$out/index.html" > "$out/index.html.tmp" && mv "$out/index.html.tmp" "$out/index.html"
+
 # jede lokale Asset-Referenz muss jetzt einen Hash tragen
 if grep -E -o '"assets/[^"?]+\.(js|css)"' "$out/index.html" "$out/impressum.html"; then
   echo "build.sh: Asset-Referenz ohne ?v= gefunden (siehe oben)" >&2
