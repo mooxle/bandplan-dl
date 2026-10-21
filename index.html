@@ -18,6 +18,23 @@
       <h1>Bandplan <span>DL</span></h1>
       <p>IARU Region 1 · AFuV 2024 · KW, 6 m, 2 m, 70 cm · nur CW, SSB, FT8, FM</p>
     </div>
+    <div class="hud">
+      <div class="live-clock" aria-label="Uhrzeit">
+        <div class="clock-utc"><span id="utcClock">--:--:--</span> <span class="clock-tz">UTC</span></div>
+        <div class="clock-date" id="clockDate">&nbsp;</div>
+        <div class="clock-local"><span id="localClock">--:--:--</span> <span class="clock-tz" id="localTz"></span></div>
+      </div>
+      <div class="hud-row">
+        <button type="button" id="themeToggle" class="theme-toggle" aria-label="Hell/Dunkel umschalten" title="Hell/Dunkel umschalten">
+          <svg class="theme-icon-sun" viewBox="0 0 20 20" width="13" height="13" aria-hidden="true"><circle cx="10" cy="10" r="4" fill="none" stroke="currentColor" stroke-width="1.6"/><g stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M10 2v2M10 16v2M18 10h-2M4 10H2M15.5 4.5l-1.4 1.4M5.9 14.1l-1.4 1.4M15.5 15.5l-1.4-1.4M5.9 5.9L4.5 4.5"/></g></svg>
+          <svg class="theme-icon-moon" viewBox="0 0 20 20" width="13" height="13" aria-hidden="true"><path d="M15.5 12.3A6.5 6.5 0 1 1 7.7 4.5a5.2 5.2 0 0 0 7.8 7.8z" fill="currentColor"/></svg>
+        </button>
+        <a class="version-link" href="https://github.com/mooxle/bandplan-dl" rel="noopener" title="Quellcode auf GitHub">
+          <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          <span id="versionHeader"></span>
+        </a>
+      </div>
+    </div>
     <div class="check">
       <label for="chk">Frequenz prüfen</label>
       <div class="field"><input id="chk" type="text" inputmode="decimal" placeholder="7074 oder 145,5" autocomplete="off" enterkeyhint="go"><span class="unit">kHz/MHz</span></div>
@@ -37,11 +54,6 @@
         <button id="tabBand" data-v="band">Bänder</button><button id="tabSheet" data-v="sheet">Spickzettel</button>
       </div>
     </div>
-    <div class="ctl theme"><span class="lbl">Design</span>
-      <div class="seg" id="theme" role="group" aria-label="Farbschema">
-        <button data-t="auto" title="Wie das Gerät">Auto</button><button data-t="light">Hell</button><button data-t="dark">Dunkel</button>
-      </div>
-    </div>
   </div>
 
   <nav class="bandbar" aria-label="Bänder"><div class="bands" id="bands"></div></nav>
@@ -53,6 +65,7 @@
     <div>Der Bandplan ist eine Empfehlung; rechtlich verbindlich sind Frequenzbereiche und Leistungen der AFuV. CW ist laut IARU auf allen Bändern überall erlaubt, außer in Bakenbereichen. Frequenzen sind Sendefrequenzen bzw. für FT8 die Dial-Frequenz (USB).</div>
     <div>Direktlinks: <span class="mono">#40</span> öffnet ein Band, <span class="mono">#f=7.074</span> prüft eine Frequenz, <span class="mono">#spick</span> den Spickzettel. Spickzettel lässt sich drucken (A4).</div>
     <div>Privates, nicht kommerzielles Projekt von Max Sammet, <a href="https://www.qrz.com/db/DA6MAX" rel="noopener noreferrer">DA6MAX</a> · <a href="impressum.html">Impressum &amp; Datenschutz</a></div>
+    <div><span id="versionFoot"></span> · MIT-Lizenz · <a href="https://github.com/mooxle/bandplan-dl" rel="noopener">Quellcode auf GitHub</a></div>
     <!--BUILD-->
   </footer>
 </div>

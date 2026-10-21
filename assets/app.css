@@ -32,7 +32,24 @@ button{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
 /* Kopf */
-header.top{display:grid;grid-template-columns:1fr auto;gap:12px 24px;align-items:end;padding-block:22px 14px}
+header.top{display:grid;grid-template-columns:1fr auto;grid-template-areas:"brand hud" "brand check" "res res";gap:12px 24px;align-items:end;padding-block:22px 14px}
+.brand{grid-area:brand}
+.check{grid-area:check}
+/* Uhr, Hell/Dunkel, GitHub + Version (wie bei MUF Muncher) */
+.hud{grid-area:hud;display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.live-clock{text-align:right;font-family:var(--font-m);font-variant-numeric:tabular-nums}
+.clock-utc{font-size:17px;font-weight:500;color:var(--ink);letter-spacing:.01em}
+.clock-date{font:500 11px var(--font-d);color:var(--muted);letter-spacing:.03em;margin-top:1px}
+.clock-local{font-size:12px;color:var(--muted);margin-top:3px}
+.clock-tz{font:500 .68em var(--font-d);color:var(--muted)}
+.hud-row{display:flex;align-items:center;gap:6px;margin-top:4px}
+.version-link{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);text-decoration:none}
+.version-link:hover{color:var(--ink)}
+.theme-toggle{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;padding:0;border:0;border-radius:6px;background:transparent;color:var(--muted);cursor:pointer}
+.theme-toggle:hover{color:var(--ink);background:var(--surface2)}
+.theme-toggle .theme-icon-moon{display:none}
+.theme-toggle.is-dark .theme-icon-sun{display:none}
+.theme-toggle.is-dark .theme-icon-moon{display:block}
 .brand h1{margin:0;font-weight:800;font-stretch:72%;font-size:clamp(30px,6vw,46px);line-height:.95;letter-spacing:-.01em;text-transform:uppercase}
 .brand h1 span{color:var(--accent)}
 .brand p{margin:6px 0 0;color:var(--muted);font-size:13.5px}
@@ -41,11 +58,10 @@ header.top{display:grid;grid-template-columns:1fr auto;gap:12px 24px;align-items
 .check .field{display:flex;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px 6px 4px 14px;gap:8px}
 .check input{border:0;background:transparent;color:var(--ink);font:500 16px var(--font-m);width:200px;min-width:0;outline:none}
 .check .unit{font:500 12px var(--font-m);color:var(--muted)}
-#chkRes{grid-column:1/-1}
+#chkRes{grid-area:res}
 
 .controls{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;padding-block:4px 12px;border-bottom:1px solid var(--line)}
 .ctl{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.ctl.theme{margin-left:auto}
 .ctl > .lbl{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600}
 .seg{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px}
 .seg button{border:0;background:transparent;padding:5px 13px;border-radius:999px;cursor:pointer;font-weight:700;font-stretch:90%}
@@ -154,7 +170,7 @@ footer a{color:inherit}
   .bandhead .pwr{margin-left:0}
 }
 @media (max-width:560px){
-  header.top{grid-template-columns:minmax(0,1fr)}
+  header.top{grid-template-columns:minmax(0,1fr);grid-template-areas:"brand" "hud" "check" "res"}
   .check input{width:100%}
   .tabs{margin-left:0}
   .rung{grid-template-columns:52px 10px minmax(0,1fr);column-gap:9px}
@@ -166,7 +182,7 @@ footer a{color:inherit}
 @media print{
   :root{--bg:#fff;--surface:#fff;--surface2:#fff;--line:#bbb}
   body{padding:0;font-size:11px}
-  .controls,.bandbar,.check,#chkRes,.linkbtn,aside.side .card:last-child{display:none!important}
+  .controls,.bandbar,.check,.hud,#chkRes,.linkbtn,aside.side .card:last-child{display:none!important}
   header.top{padding-block:0 8px}
   .sheet{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;padding-top:6px}
   .scard{padding:8px;break-inside:avoid;gap:5px}

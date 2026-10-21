@@ -12,7 +12,7 @@ Interaktiver Amateurfunk-Bandplan für Deutschland als statische Webseite: KW (1
 - **Spickzettel.** Alle Bänder auf einen Blick, druckbar auf A4 (Browser-Druck).
 - **Frequenz prüfen.** Eingabe in kHz (`7074`), MHz (`145,5`) oder Hz (`14074000`). Zeigt Segment, passende Betriebsarten, FM-Bandbreite und warnt vor Notfunk- und Bakenfrequenzen in der Nähe. `Enter` springt ins Band, `Esc` löscht.
 - **Direktlinks.** `#40` öffnet ein Band, `#f=7.074` prüft eine Frequenz, `#spick` öffnet den Spickzettel.
-- Hell/Dunkel: Umschalter „Design“ (Auto = Systemeinstellung, Hell, Dunkel); die Wahl bleibt im Browser gespeichert (`localStorage`).
+- **Kopfbereich** wie bei MUF Muncher: UTC-Uhr mit Datum und Ortszeit, Hell/Dunkel-Umschalter (ohne eigene Wahl gilt die Systemeinstellung; die Wahl bleibt im Browser gespeichert) und die laufende Version mit Link zum Quellcode.
 
 <p><img src="docs/screenshot-spickzettel.png" width="62%" alt="Spickzettel"> <img src="docs/screenshot-mobile.png" width="30%" alt="Mobilansicht 40 m"></p>
 
@@ -101,6 +101,23 @@ Das Skript prüft, dass die Segmente jedes Band lückenlos abdecken, alle Marken
 - [IARU R1 UHF Bandplan 2020 (via IRTS)](https://www.irts.ie/dnloads/IARU-R1-Bandplan-UHF-2020.pdf)
 - [AFuV Anlage 1](https://www.gesetze-im-internet.de/afuv_2005/anlage_1.html)
 - [DARC Notfunk-Frequenzen (2022-09-13)](https://www.mikrocontroller.net/attachment/570850/darc_notfunk_Notfunkfrequenzen_2022-09-13.pdf)
+
+## Release erstellen
+
+Versionen nach Semantic Versioning, Änderungen stehen in [`CHANGELOG.md`](CHANGELOG.md). Die Versionsnummer steht als `VERSION` oben in [`assets/app.js`](assets/app.js) und wird im Kopf und im Footer angezeigt.
+
+1. `VERSION` in `assets/app.js` erhöhen und in `CHANGELOG.md` einen Abschnitt `## [x.y.z] - JJJJ-MM-TT` samt Link unten anlegen.
+2. Committen, taggen und auf beide Remotes pushen. Der Push nach GitHub deployt die neue Version.
+   ```bash
+   git commit -am "Release vX.Y.Z"
+   git tag -a vX.Y.Z -m "vX.Y.Z"
+   git push private main --tags
+   git push origin main --tags
+   ```
+3. GitHub-Release mit den Notizen aus dem Changelog anlegen:
+   ```bash
+   gh release create vX.Y.Z --repo mooxle/bandplan-dl --title vX.Y.Z --notes "$(awk '/^## \[X.Y.Z\]/{f=1;next} /^## \[/{f=0} f && !/^\[[0-9]/' CHANGELOG.md)"
+   ```
 
 ## Lizenz
 

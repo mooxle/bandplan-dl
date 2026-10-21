@@ -1,5 +1,7 @@
 /* Bandplan DL – Logik (Rendering, Frequenz-Check, Zustand). Daten kommen aus data.js. */
 
+const VERSION='1.0.0';  // bei jedem Release erhöhen, zusammen mit CHANGELOG.md (siehe README, „Release erstellen“)
+
 /* ---------- Helfer ---------- */
 const fwOf=(b,s)=>(FW[b.id]||{})[s.lo];
 const fmt=k=>{let s=(k/1000).toFixed(4);s=s.replace(/0$/,'');return s.replace('.',',')};
@@ -225,16 +227,28 @@ function applyHash(){
   readHash();render();check($('chk').value);
   if(state.hit) showHit();
 }
-/* ---------- Farbschema: auto (System) | hell | dunkel. Der gespeicherte Wert wird schon in theme.js (im <head>) gesetzt. ---------- */
-function applyTheme(t){
-  const r=document.documentElement;
-  if(t==='light'||t==='dark')r.dataset.theme=t;else delete r.dataset.theme;
-  document.querySelectorAll('#theme button').forEach(bt=>bt.setAttribute('aria-pressed',String(bt.dataset.t===t)));
+/* ---------- Kopf: Version, Uhr, Hell/Dunkel (wie bei MUF Muncher) ---------- */
+$('versionHeader').textContent='v'+VERSION;
+$('versionFoot').textContent='Bandplan DL v'+VERSION;
+
+const fmtDate=new Intl.DateTimeFormat('de-DE',{timeZone:'UTC',weekday:'short',day:'numeric',month:'short',year:'numeric'});
+function tick(){
+  const now=new Date();
+  $('utcClock').textContent=now.toISOString().slice(11,19);
+  $('clockDate').textContent=fmtDate.format(now);
+  $('localClock').textContent=now.toLocaleTimeString('de-DE',{hour12:false});
+  const tz=new Intl.DateTimeFormat('de-DE',{timeZoneName:'short'}).formatToParts(now).find(p=>p.type==='timeZoneName');
+  $('localTz').textContent=tz?tz.value:'';
 }
-let theme=store.get('theme','auto');
-if(!['auto','light','dark'].includes(theme))theme='auto';
-applyTheme(theme);
-document.querySelectorAll('#theme button').forEach(bt=>bt.onclick=()=>{theme=bt.dataset.t;store.set('theme',theme);applyTheme(theme)});
+tick();setInterval(tick,1000);
+
+/* Explizite Wahl liegt in localStorage 'bp_theme' und wird schon in theme.js (im <head>) gesetzt; ohne Wahl gilt prefers-color-scheme. */
+const prefersDark=matchMedia('(prefers-color-scheme: dark)');
+const effectiveTheme=()=>{const t=document.documentElement.dataset.theme;return t==='light'||t==='dark'?t:(prefersDark.matches?'dark':'light')};
+const syncThemeIcon=()=>$('themeToggle').classList.toggle('is-dark',effectiveTheme()==='dark');
+$('themeToggle').onclick=()=>{const next=effectiveTheme()==='dark'?'light':'dark';document.documentElement.dataset.theme=next;store.set('theme',next);syncThemeIcon()};
+prefersDark.addEventListener('change',syncThemeIcon);
+syncThemeIcon();
 
 addEventListener('hashchange',applyHash);
 applyHash();
