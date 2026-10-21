@@ -17,7 +17,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       # kaputte Bandplan-Daten (Lücken, Marken außerhalb des Bandes, ...) gehen gar nicht erst online
       - name: Validate data
