@@ -1,0 +1,465 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Bandplan DL</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Chivo+Mono:wght@400;500;700&display=swap">
+<style>
+/* Layout: Kopf mit Klasse/Modi/Frequenz-Check, Bandleiste (sticky), darunter Band-"Skala" als vertikale Frequenzleiter + Seitenleiste mit "Hier kannst du funken". */
+:root{
+  --bg:#edf0f1; --surface:#ffffff; --surface2:#f5f7f7; --ink:#131a1f; --muted:#5a666e; --line:#d5dbde;
+  --accent:#c97a12; --accent-soft:#f6e3c4; --accent-ink:#2a1903;
+  --k-cw:#2c68d0; --k-digi:#7547c9; --k-ssb:#1f8c59; --k-all:#12857b; --k-fm:#d8601a;
+  --k-ex:#87929a; --k-bake:#cf3434; --k-sat:#ad8410;
+  --font-d:"Archivo", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --font-m:"Chivo Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0d1113; --surface:#151a1d; --surface2:#1b2125; --ink:#e3e8eb; --muted:#94a0a7; --line:#2a3237;
+  --accent:#f0a63a; --accent-soft:#3a2a12; --accent-ink:#1a1105;
+  --k-cw:#6a9bf0; --k-digi:#a585ec; --k-ssb:#47bf86; --k-all:#3cbaae; --k-fm:#f2894a;
+  --k-ex:#6d787f; --k-bake:#ef6363; --k-sat:#d8b03e; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0d1113; --surface:#151a1d; --surface2:#1b2125; --ink:#e3e8eb; --muted:#94a0a7; --line:#2a3237;
+  --accent:#f0a63a; --accent-soft:#3a2a12; --accent-ink:#1a1105;
+  --k-cw:#6a9bf0; --k-digi:#a585ec; --k-ssb:#47bf86; --k-all:#3cbaae; --k-fm:#f2894a;
+  --k-ex:#6d787f; --k-bake:#ef6363; --k-sat:#d8b03e; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-d);font-size:15px;line-height:1.45;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:0 48px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top, 0px);z-index:10;background:var(--bg)}
+.wrap{max-width:1120px;margin:0 auto}
+.mono{font-family:var(--font-m);font-variant-numeric:tabular-nums}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* Kopf */
+header.top{display:grid;grid-template-columns:1fr auto;gap:12px 24px;align-items:end;padding-block:22px 14px}
+.brand h1{margin:0;font-weight:800;font-stretch:72%;font-size:clamp(30px,6vw,46px);line-height:.95;letter-spacing:-.01em;text-transform:uppercase}
+.brand h1 span{color:var(--accent)}
+.brand p{margin:6px 0 0;color:var(--muted);font-size:13.5px}
+.check{display:flex;flex-direction:column;gap:6px;min-width:0}
+.check label{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.check .field{display:flex;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px 6px 4px 14px;gap:8px}
+.check input{border:0;background:transparent;color:var(--ink);font:500 16px var(--font-m);width:170px;min-width:0;outline:none}
+.check .unit{font:500 12px var(--font-m);color:var(--muted)}
+#chkRes{grid-column:1/-1}
+
+.controls{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;padding-block:4px 12px;border-bottom:1px solid var(--line)}
+.ctl{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ctl > .lbl{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.seg{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px}
+.seg button{border:0;background:transparent;padding:5px 13px;border-radius:999px;cursor:pointer;font-weight:700;font-stretch:90%}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.mode{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px 5px 9px;cursor:pointer;font-weight:700;font-stretch:90%;display:inline-flex;align-items:center;gap:7px}
+.mode i{width:10px;height:10px;border-radius:50%;background:var(--c);display:inline-block}
+.mode[aria-pressed="false"]{opacity:.45}
+.mode[aria-pressed="false"] i{background:transparent;box-shadow:inset 0 0 0 2px var(--c)}
+.tabs{margin-left:auto}
+
+/* Bandleiste */
+.bandbar{position:sticky;top:env(safe-area-inset-top, 0px);z-index:5;background:var(--bg);padding-block:10px;border-bottom:1px solid var(--line)}
+.bands{display:flex;gap:6px;overflow-x:auto;scrollbar-width:thin;padding-bottom:2px}
+.bands .grp{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;align-self:center;padding:0 4px 0 6px;white-space:nowrap}
+.bands .grp:first-child{padding-left:0}
+.bchip{flex:0 0 auto;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:6px 11px;cursor:pointer;font:700 15px var(--font-d);font-stretch:85%;white-space:nowrap;position:relative}
+.bchip small{font-weight:600;color:var(--muted);font-size:11px;margin-left:2px}
+.bchip.off{opacity:.42;text-decoration:line-through;text-decoration-thickness:1.5px}
+.bchip[aria-current="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.bchip[aria-current="true"] small{color:var(--accent-ink)}
+
+/* Bandansicht */
+.bandview{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:28px;padding-top:20px;align-items:start}
+.bandhead{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 18px}
+.bandhead h2{margin:0;font-weight:800;font-stretch:70%;font-size:clamp(40px,9vw,64px);line-height:.9;letter-spacing:-.01em}
+.bandhead .range{font:500 15px var(--font-m);color:var(--muted)}
+.bandhead .pwr{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:12px;font-weight:700;border:1px solid var(--line);border-radius:6px;padding:3px 8px;background:var(--surface);white-space:nowrap}
+.tag.warn{background:var(--accent-soft);border-color:var(--accent);color:var(--ink)}
+.minimap{grid-column:1/-1;display:flex;height:14px;border-radius:4px;overflow:hidden;gap:1px;background:var(--line)}
+.minimap div{min-width:3px;background:var(--k)}
+.minimap .ex{background:repeating-linear-gradient(135deg,var(--k) 0 3px,var(--surface) 3px 6px)}
+
+.ladder{display:flex;flex-direction:column}
+.rung{display:grid;grid-template-columns:62px 14px minmax(0,1fr);column-gap:12px;transition:opacity .15s}
+.rf{font:500 12.5px var(--font-m);color:var(--muted);text-align:right;transform:translateY(-.55em);white-space:nowrap}
+.rbar{background:var(--k);border-top:2px solid var(--bg)}
+.rung.ex .rbar{background:repeating-linear-gradient(135deg,var(--k) 0 4px,color-mix(in srgb,var(--k) 22%,var(--surface)) 4px 8px)}
+.rbody{padding:8px 0 12px;border-top:1px solid var(--line);min-width:0}
+.rl{font-weight:700;font-size:15.5px;line-height:1.25}
+.rk{font-size:12px;color:var(--muted);margin-top:1px}
+.rung.ex .rl{color:var(--muted)}
+.rung.dim{opacity:.3}
+.rung.hit .rbody{background:linear-gradient(90deg,var(--accent-soft),transparent 80%)}
+.rung.end{grid-template-rows:auto}
+.rung.end .rbody{border-top:1px solid var(--line);padding:0}
+.pills{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.pill{display:inline-flex;align-items:baseline;gap:6px;font-size:12.5px;font-weight:600;border-radius:999px;padding:2px 9px;border:1px solid var(--line);background:var(--surface);white-space:nowrap}
+.pill b{font:700 12.5px var(--font-m)}
+.pill.t-ft8{background:var(--k-digi);border-color:var(--k-digi);color:#fff}
+.pill.t-notfunk{background:var(--k-bake);border-color:var(--k-bake);color:#fff}
+.pill.t-bake{border-color:var(--k-bake);color:var(--k-bake)}
+.pill.t-call{background:var(--accent-soft);border-color:var(--accent)}
+.pill.t-qrp,.pill.t-info{color:var(--muted)}
+
+aside.side{display:flex;flex-direction:column;gap:18px;position:sticky;top:calc(env(safe-area-inset-top, 0px) + 70px)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 16px 14px}
+.card h3{margin:0 0 10px;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.go{display:flex;flex-direction:column;gap:10px}
+.go .row{display:grid;grid-template-columns:54px minmax(0,1fr);gap:10px;align-items:start}
+.go .md{font-weight:800;font-stretch:85%;display:flex;align-items:center;gap:6px}
+.go .md i{width:9px;height:9px;border-radius:50%;background:var(--c)}
+.go .val{font:500 14px var(--font-m);min-width:0}
+.go .val span{display:inline-block;margin-right:10px}
+.go .val em{font-style:normal;font-family:var(--font-d);font-size:12.5px;color:var(--muted);display:block}
+.go .none{color:var(--muted);font-family:var(--font-d);font-size:13.5px}
+.keep{display:flex;flex-wrap:wrap;gap:6px}
+.notes{margin:0;padding-left:18px;color:var(--ink);font-size:13.5px;display:flex;flex-direction:column;gap:5px}
+.legend{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px 12px;font-size:12.5px}
+.legend div{display:flex;align-items:center;gap:7px}
+.legend i{width:18px;height:12px;border-radius:2px;background:var(--k);flex:0 0 auto}
+.legend .ex i{background:repeating-linear-gradient(135deg,var(--k) 0 3px,var(--surface) 3px 6px)}
+.fwb{display:inline-block;margin-top:6px;font-size:11.5px;font-weight:700;letter-spacing:.02em;border-radius:4px;padding:1px 7px;border:1.5px solid var(--k-fm);color:var(--k-fm);background:var(--surface)}
+.fwb.w{background:var(--k-fm);color:var(--surface)}
+.legend .fwb{margin-top:0;flex:0 0 auto}
+.notice{background:var(--accent-soft);border:1px solid var(--accent);border-radius:var(--r);padding:10px 14px;font-size:14px;grid-column:1/-1}
+
+/* Prüf-Ergebnis */
+.result{background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--k, var(--accent));border-radius:var(--r);padding:12px 14px;display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center}
+.result strong{font-size:16px}
+.result .mono{color:var(--muted)}
+.result .warnline{flex-basis:100%;color:var(--k-bake);font-weight:700;font-size:13.5px}
+.result .okline{flex-basis:100%;font-size:13.5px}
+.linkbtn{border:1px solid var(--line);background:var(--surface2);border-radius:999px;padding:4px 12px;cursor:pointer;font-weight:700;font-size:13px;margin-left:auto}
+
+/* Spickzettel */
+.sheet{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;padding-top:20px}
+.scard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:9px;cursor:pointer;text-align:left}
+.scard:hover{border-color:var(--accent)}
+.scard.off{opacity:.45}
+.scard .sh{display:flex;align-items:baseline;gap:10px}
+.scard .sh b{font-weight:800;font-stretch:72%;font-size:28px;line-height:1}
+.scard .sh .mono{font-size:12px;color:var(--muted)}
+.scard .sh .tag{margin-left:auto}
+.scard .go .row{grid-template-columns:46px minmax(0,1fr)}
+.scard .go .val{font-size:13px}
+.scard .keep .pill{font-size:11.5px}
+
+footer{margin-top:36px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:12.5px;display:flex;flex-direction:column;gap:6px}
+footer a{color:inherit}
+
+@media (max-width:820px){
+  .bandview{grid-template-columns:minmax(0,1fr);gap:18px}
+  aside.side{position:static;order:-1}
+  .bandhead .pwr{margin-left:0}
+}
+@media (max-width:560px){
+  header.top{grid-template-columns:minmax(0,1fr)}
+  .check input{width:100%}
+  .tabs{margin-left:0}
+  .rung{grid-template-columns:52px 10px minmax(0,1fr);column-gap:9px}
+  .rf{font-size:11.5px}
+}
+@media (prefers-reduced-motion: reduce){ .rung{transition:none} }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <h1>Bandplan <span>DL</span></h1>
+      <p>IARU Region 1 · AFuV 2024 · KW, 6 m, 2 m, 70 cm · nur CW, SSB, FT8, FM</p>
+    </div>
+    <div class="check">
+      <label for="chk">Frequenz prüfen</label>
+      <div class="field"><input id="chk" type="text" inputmode="decimal" placeholder="z.B. 7074 oder 145,5" autocomplete="off"><span class="unit">kHz/MHz</span></div>
+    </div>
+    <div id="chkRes" aria-live="polite"></div>
+  </header>
+
+  <div class="controls">
+    <div class="ctl"><span class="lbl">Klasse</span>
+      <div class="seg" id="cls" role="group" aria-label="Lizenzklasse">
+        <button id="clsA" data-c="A">A</button><button id="clsE" data-c="E">E</button><button id="clsN" data-c="N">N</button>
+      </div>
+    </div>
+    <div class="ctl" id="modes"><span class="lbl">Betriebsart</span></div>
+    <div class="ctl tabs">
+      <div class="seg" role="group" aria-label="Ansicht">
+        <button id="tabBand" data-v="band">Bänder</button><button id="tabSheet" data-v="sheet">Spickzettel</button>
+      </div>
+    </div>
+  </div>
+
+  <nav class="bandbar" aria-label="Bänder"><div class="bands" id="bands"></div></nav>
+
+  <main id="main"></main>
+
+  <footer>
+    <div>Grundlage: IARU-R1-Bandplan KW (gültig seit 16.10.2020), IARU-R1 VHF Handbook 10.03 (Feb. 2026), AFuV Anlage 1 (Stand 2024), Notfunk-Frequenzen des DARC-Notfunkreferats.</div>
+    <div>Der Bandplan ist eine Empfehlung; rechtlich verbindlich sind Frequenzbereiche und Leistungen der AFuV. CW ist laut IARU auf allen Bändern überall erlaubt, außer in Bakenbereichen. Frequenzen sind Sendefrequenzen bzw. für FT8 die Dial-Frequenz (USB).</div>
+  </footer>
+</div>
+
+<script>
+const S=(lo,hi,k,l)=>({lo,hi,k,l});
+const M=(f,t,l,mode)=>({f,t,l,mode});
+
+const KINDS={
+  cw:{n:'CW',c:'--k-cw',modes:['cw']},
+  schmal:{n:'Schmalband · Digimodes',c:'--k-digi',modes:['cw','ft8']},
+  auto:{n:'Digimodes · automatische Stationen',c:'--k-digi',modes:['cw']},
+  ssb:{n:'Alle Modes · Phonie (SSB)',c:'--k-ssb',modes:['ssb','cw']},
+  allmode:{n:'All Mode inkl. FM',c:'--k-all',modes:['ssb','cw','fm']},
+  fm:{n:'FM Simplex',c:'--k-fm',modes:['fm']},
+  relais:{n:'Relais · kein Simplex',c:'--k-ex',ex:true},
+  daten:{n:'Daten · keine Sprache',c:'--k-ex',ex:true},
+  andere:{n:'Sonstige Nutzung',c:'--k-ex',ex:true},
+  guard:{n:'Schutzband',c:'--k-ex',ex:true},
+  bake:{n:'Baken · nicht senden',c:'--k-bake',ex:true},
+  sat:{n:'Satellit · kein Erdfunk',c:'--k-sat',ex:true}
+};
+const MODES=[{id:'cw',n:'CW',c:'--k-cw'},{id:'ssb',n:'SSB',c:'--k-ssb'},{id:'ft8',n:'FT8',c:'--k-digi'},{id:'fm',n:'FM',c:'--k-fm'}];
+
+const BANDS=[
+{id:'160',name:'160 m',g:'KW',lo:1810,hi:2000,cls:{A:'750 / 75 / 10 W PEP',E:'100 / 75 / 10 W PEP'},
+ segs:[S(1810,1838,'cw','CW'),S(1838,1840,'schmal','Schmalband'),S(1840,1843,'schmal','Digimodes'),S(1843,2000,'ssb','Alle Modes · SSB')],
+ mk:[M(1836,'qrp','CW QRP'),M(1840,'ft8','FT8')],
+ notes:['Leistung: 1810–1850 kHz A 750 W / E 100 W · 1850–1890 kHz 75 W · 1890–2000 kHz 10 W. Am Wochenende auch oberhalb 1850 kHz volle Leistung.','1850–2000 kHz sekundär, werktags kein Contest.','LSB; tiefste Dial-Frequenz für Sprache 1843 kHz.','1907,5–1912,5 kHz (japanisches DX-Fenster) freihalten.']},
+{id:'80',name:'80 m',g:'KW',lo:3500,hi:3800,cls:{A:'750 W PEP',E:'100 W PEP'},
+ segs:[S(3500,3510,'cw','CW · DX-Vorrang'),S(3510,3560,'cw','CW · Contest bevorzugt'),S(3560,3570,'cw','CW'),S(3570,3580,'schmal','Digimodes (200 Hz)'),S(3580,3590,'schmal','Digimodes'),S(3590,3600,'auto','Digimodes · automatisch'),S(3600,3620,'ssb','Alle Modes · auch Digimodes'),S(3620,3775,'ssb','Alle Modes · SSB'),S(3775,3800,'ssb','SSB · DX-Vorrang')],
+ mk:[M(3555,'qrp','CW QRS'),M(3560,'qrp','CW QRP'),M(3573,'ft8','FT8'),M(3630,'info','Digital Voice'),M(3690,'qrp','SSB QRP'),M(3735,'info','SSTV/Bild'),M(3760,'notfunk','Notfunk')],
+ notes:['LSB; tiefste Dial-Frequenz für Sprache 3603 kHz.']},
+{id:'60',name:'60 m',g:'KW',lo:5351.5,hi:5366.5,cls:{A:'15 W EIRP'},
+ segs:[S(5351.5,5354,'schmal','CW · Schmalband'),S(5354,5366,'ssb','Alle Modes · USB'),S(5366,5366.5,'schmal','Weak Signal (20 Hz)')],
+ mk:[M(5357,'ft8','FT8')],
+ notes:['Nur Klasse A, max. 15 W EIRP (≈ 9,14 W ERP), sekundär.','USB; höchste Dial-Frequenz für Sprache 5363 kHz.','Kein Contest. Lange Runden besser auf 80 oder 40 m.']},
+{id:'40',name:'40 m',g:'KW',lo:7000,hi:7200,cls:{A:'750 W PEP'},
+ segs:[S(7000,7040,'cw','CW'),S(7040,7047,'schmal','Digimodes'),S(7047,7053,'auto','Digimodes · automatisch'),S(7053,7060,'ssb','Alle Modes · bevorzugt Digimodes'),S(7060,7175,'ssb','Alle Modes · SSB'),S(7175,7200,'ssb','SSB · DX-Vorrang')],
+ mk:[M(7030,'qrp','CW QRP'),M(7070,'info','Digital Voice'),M(7074,'ft8','FT8'),M(7090,'qrp','SSB QRP'),M(7110,'notfunk','Notfunk'),M(7165,'info','SSTV/Bild')],
+ notes:['LSB; tiefste Dial-Frequenz für Sprache 7053 kHz.']},
+{id:'30',name:'30 m',g:'KW',lo:10100,hi:10150,cls:{A:'150 W PEP'},
+ segs:[S(10100,10130,'cw','CW'),S(10130,10150,'schmal','Digimodes')],
+ mk:[M(10116,'qrp','CW QRP'),M(10136,'ft8','FT8')],
+ notes:['Kein SSB: AFuV erlaubt max. 800 Hz Bandbreite.','Sekundär, kein Contest.']},
+{id:'20',name:'20 m',g:'KW',lo:14000,hi:14350,cls:{A:'750 W PEP'},
+ segs:[S(14000,14060,'cw','CW · Contest bevorzugt'),S(14060,14070,'cw','CW'),S(14070,14089,'schmal','Digimodes'),S(14089,14099,'auto','Digimodes · automatisch'),S(14099,14101,'bake','IBP-Baken'),S(14101,14112,'auto','Digimodes · automatisch'),S(14112,14125,'ssb','Alle Modes'),S(14125,14300,'ssb','Alle Modes · SSB'),S(14300,14350,'ssb','Alle Modes')],
+ mk:[M(14055,'qrp','CW QRS'),M(14060,'qrp','CW QRP'),M(14074,'ft8','FT8'),M(14100,'bake','IBP-Bake'),M(14130,'info','Digital Voice'),M(14195,'info','DXpeditionen ±5'),M(14230,'info','SSTV/Bild'),M(14285,'qrp','SSB QRP'),M(14300,'notfunk','Notfunk (global)')],
+ notes:['USB.','14 190–14 200 kHz bei DXpeditionen freihalten.']},
+{id:'17',name:'17 m',g:'KW',lo:18068,hi:18168,cls:{A:'750 W PEP'},
+ segs:[S(18068,18095,'cw','CW'),S(18095,18105,'schmal','Digimodes'),S(18105,18109,'auto','Digimodes · automatisch'),S(18109,18111,'bake','IBP-Baken'),S(18111,18120,'auto','Digimodes · automatisch'),S(18120,18168,'ssb','Alle Modes · SSB')],
+ mk:[M(18086,'qrp','CW QRP'),M(18100,'ft8','FT8'),M(18110,'bake','IBP-Bake'),M(18130,'qrp','SSB QRP'),M(18150,'info','Digital Voice'),M(18160,'notfunk','Notfunk')],
+ notes:['Contestfreies Band.','USB.']},
+{id:'15',name:'15 m',g:'KW',lo:21000,hi:21450,cls:{A:'750 W PEP',E:'100 W PEP'},
+ segs:[S(21000,21070,'cw','CW'),S(21070,21090,'schmal','Digimodes'),S(21090,21120,'auto','Digimodes · automatisch'),S(21120,21149,'schmal','Schmalband'),S(21149,21151,'bake','IBP-Baken'),S(21151,21450,'ssb','Alle Modes · SSB')],
+ mk:[M(21055,'qrp','CW QRS'),M(21060,'qrp','CW QRP'),M(21074,'ft8','FT8'),M(21150,'bake','IBP-Bake'),M(21180,'info','Digital Voice'),M(21285,'qrp','SSB QRP'),M(21340,'info','SSTV/Bild'),M(21360,'notfunk','Notfunk (global)')],
+ notes:['USB.']},
+{id:'12',name:'12 m',g:'KW',lo:24890,hi:24990,cls:{A:'750 W PEP'},
+ segs:[S(24890,24915,'cw','CW'),S(24915,24925,'schmal','Digimodes'),S(24925,24929,'auto','Digimodes · automatisch'),S(24929,24931,'bake','IBP-Baken'),S(24931,24940,'auto','Digimodes · automatisch'),S(24940,24990,'ssb','Alle Modes · SSB')],
+ mk:[M(24906,'qrp','CW QRP'),M(24915,'ft8','FT8'),M(24930,'bake','IBP-Bake'),M(24950,'qrp','SSB QRP'),M(24960,'info','Digital Voice')],
+ notes:['Contestfreies Band.','USB.']},
+{id:'10',name:'10 m',g:'KW',lo:28000,hi:29700,cls:{A:'750 W PEP',E:'100 W PEP',N:'10 W ERP'},
+ segs:[S(28000,28070,'cw','CW'),S(28070,28120,'schmal','Digimodes'),S(28120,28150,'auto','Digimodes · automatisch'),S(28150,28190,'schmal','Schmalband'),S(28190,28225,'bake','IBP- und Dauerbaken'),S(28225,28300,'bake','Bakenbereich (alle Modes)'),S(28300,28320,'auto','Digimodes · automatisch'),S(28320,29000,'ssb','Alle Modes · SSB'),S(29000,29100,'allmode','Alle Modes · auch AM/FM'),S(29100,29200,'fm','FM Simplex · 10-kHz-Raster'),S(29200,29300,'auto','Digimodes · automatisch'),S(29300,29510,'sat','Satelliten'),S(29510,29520,'guard','Schutzkanal'),S(29520,29590,'relais','Relais-Eingaben RH1–RH8'),S(29590,29605,'fm','FM-Anrufkanal'),S(29605,29615,'relais','Simplex-Papagei 29,610'),S(29615,29700,'relais','Relais-Ausgaben RH1–RH8')],
+ mk:[M(28055,'qrp','CW QRS'),M(28060,'qrp','CW QRP'),M(28074,'ft8','FT8'),M(28200,'bake','IBP-Bake'),M(28330,'info','Digital Voice'),M(28360,'qrp','SSB QRP'),M(28680,'info','SSTV/Bild'),M(29600,'call','FM-Anruf','fm')],
+ notes:['Klasse N: ganzes Band, max. 10 W ERP.','USB unterhalb 29 MHz; FM ab 29 MHz (NBFM, Relaisablage −100 kHz).']},
+{id:'6',name:'6 m',g:'UKW',lo:50000,hi:52000,cls:{A:'750 W bis 50,4 · 25 W PEP darüber'},
+ segs:[S(50000,50030,'bake','Synchron-Baken'),S(50030,50100,'cw','CW exklusiv'),S(50100,50130,'ssb','SSB/CW · Interkontinental'),S(50130,50200,'ssb','SSB/CW · International'),S(50200,50300,'ssb','SSB/CW · allgemein'),S(50300,50400,'schmal','MGM · Digimodes'),S(50400,50500,'bake','Baken exklusiv'),S(50500,50700,'allmode','All Mode · Digital'),S(50700,50900,'relais','Relais-Ausgaben'),S(50900,51200,'andere','Breitband-Experimente'),S(51200,51400,'relais','Relais-Eingaben'),S(51400,51600,'fm','FM/DV Simplex'),S(51600,51800,'allmode','All Mode'),S(51800,52000,'relais','Relais-Ausgaben')],
+ mk:[M(50050,'info','CW-Zentrum'),M(50090,'info','CW DX'),M(50110,'info','DX-Anruf, nicht innerhalb EU'),M(50150,'call','SSB-Anruf','ssb'),M(50313,'ft8','FT8'),M(50630,'info','DV-Anruf'),M(51510,'call','FM-Anruf','fm')],
+ notes:['Nur Klasse A, sekundär.','50,0–50,4 MHz: 750 W PEP · 50,4–52 MHz: 25 W PEP.','Nur ortsfeste Stationen, nur horizontale Polarisation, max. 12 kHz Bandbreite.']},
+{id:'2',name:'2 m',g:'UKW',lo:144000,hi:146000,cls:{A:'750 W PEP',E:'75 W PEP',N:'6,1 W ERP'},
+ segs:[S(144000,144025,'sat','Satelliten-Downlinks'),S(144025,144100,'cw','CW exklusiv'),S(144100,144150,'schmal','CW & MGM · EME'),S(144150,144400,'ssb','SSB · CW · MGM'),S(144400,144490,'bake','Baken exklusiv'),S(144490,144500,'bake','Experimentelle MGM-Baken'),S(144500,144794,'allmode','All Mode · nur Simplex'),S(144794,144962.5,'daten','Digitale Kommunikation'),S(144962.5,144975,'guard','Schutzband'),S(144975,145194,'relais','Relais-Eingaben'),S(145194,145206,'sat','Raumfahrt · ISS-Uplink'),S(145206,145562.5,'fm','FM/DV Simplex'),S(145562.5,145575,'guard','Schutzband'),S(145575,145793.5,'relais','Relais-Ausgaben'),S(145793.5,145806,'sat','Raumfahrt · ISS-Downlink'),S(145806,146000,'sat','Satelliten exklusiv')],
+ mk:[M(144050,'call','CW-Anruf','cw'),M(144174,'ft8','FT8'),M(144260,'notfunk','Notfunk USB (DL)'),M(144300,'call','SSB-Anruf','ssb'),M(144500,'info','SSTV'),M(144800,'info','APRS'),M(145375,'info','DV-Anruf'),M(145500,'call','FM-Anruf','fm'),M(145500,'notfunk','Notfunk = FM-Anruf')],
+ notes:['Unterhalb 144,794 MHz keine Relais.','All-Mode-Bereich 144,500–144,794: nur Simplex, keine Gateways, FM erlaubt.','FM-Raster 12,5 kHz; Relaisablage −600 kHz.','145,500 MHz ist FM-Anruf und zugleich Notfunk-Frequenz: kurz anrufen, dann auf einen freien Simplexkanal wechseln.','Notfunk in SSB liegt auf 144,260 MHz USB, nicht auf dem SSB-Anruf 144,300.']},
+{id:'70',name:'70 cm',g:'UKW',lo:430000,hi:440000,cls:{A:'750 W PEP',E:'75 W PEP',N:'6,1 W ERP'},
+ segs:[S(430000,432000,'relais','Relais-Eingaben (7,6 MHz) · Packet · Links'),S(432000,432100,'cw','Schmalband · CW bevorzugt'),S(432100,432400,'ssb','Schmalband · SSB · FT8'),S(432400,432500,'bake','Baken exklusiv'),S(432500,432600,'daten','APRS · Transponder'),S(432600,433000,'relais','Relais-Eingaben (2 MHz)'),S(433000,433400,'relais','Relais-Eingaben (1,6 MHz)'),S(433400,433600,'fm','FM/DV Simplex'),S(433600,434000,'daten','Digital · LoRa · Experimente'),S(434000,434600,'andere','All Mode · DATV/Digital'),S(434600,435000,'relais','Relais-Ausgaben (1,6/2 MHz)'),S(435000,438000,'sat','Satelliten'),S(438000,438650,'daten','Digitale Kommunikation · Packet'),S(438650,439600,'relais','Relais-Ausgaben (−7,6 MHz)'),S(439600,440000,'daten','Digital-Links · Funkruf')],
+ mk:[M(432050,'call','CW-Anruf','cw'),M(432174,'ft8','FT8'),M(432200,'call','SSB-Anruf','ssb'),M(432500,'info','APRS'),M(433450,'info','DV-Anruf'),M(433500,'call','FM-Anruf','fm'),M(433500,'notfunk','Notfunk = FM-Anruf'),M(433775,'info','LoRa APRS'),M(439987.5,'info','POCSAG')],
+ notes:['FM-Simplex im 25-kHz-Raster: 433,400–433,575 MHz.','DL-Relais meist Ausgabe 438,650–439,575 MHz, Eingabe 7,6 MHz tiefer.','435–438 MHz nur Satellitenbetrieb.','IARU führt 432,000–432,400 als einen Schmalbandbereich; CW-Zentrum 432,050.','433,500 MHz ist FM-Anruf und zugleich Notfunk-Frequenz: kurz anrufen, dann auf einen freien Simplexkanal wechseln.']}
+];
+
+/* FM-Bandbreite je Segment: n = Schmalband-FM (NBFM, ±2,5 kHz Hub), w = Breit-FM (±5 kHz) zulässig */
+const FW={
+  '10':{29000:['w','Breit-FM möglich · AFuV bis 40 kHz'],29100:['n','NBFM · 10-kHz-Raster'],29520:['n','NBFM · max. 6 kHz'],29590:['n','NBFM · max. 6 kHz'],29605:['n','NBFM · max. 6 kHz'],29615:['n','NBFM · max. 6 kHz']},
+  '6':{50500:['n','nur NBFM · AFuV max. 12 kHz'],50700:['n','nur NBFM · AFuV max. 12 kHz'],51200:['n','nur NBFM · AFuV max. 12 kHz'],51400:['n','nur NBFM · AFuV max. 12 kHz'],51600:['n','nur NBFM · AFuV max. 12 kHz'],51800:['n','nur NBFM · AFuV max. 12 kHz']},
+  '2':{144500:['w','Breit-FM möglich · bis 20 kHz'],144975:['n','NBFM · 12,5-kHz-Raster'],145206:['n','NBFM · 12,5-kHz-Raster'],145575:['n','NBFM · 12,5-kHz-Raster']},
+  '70':{430000:['n','NBFM · 12,5-kHz-Raster'],433000:['n','NBFM · max. 12 kHz'],433400:['n','NBFM · 25-kHz-Raster, max. 12 kHz'],434600:['n','NBFM · 12,5-kHz-Raster'],438650:['n','NBFM · ältere Relais teils noch breit, Relaisliste prüfen']}
+};
+const fwOf=(b,s)=>(FW[b.id]||{})[s.lo];
+
+/* ---------- Helfer ---------- */
+const fmt=k=>{let s=(k/1000).toFixed(4);s=s.replace(/0$/,'');return s.replace('.',',')};
+const rng=(a,b)=>fmt(a)+'–'+fmt(b);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const store={get(k,d){try{const v=localStorage.getItem('bp_'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem('bp_'+k,JSON.stringify(v))}catch(e){}}};
+
+const state={cls:store.get('cls','A'),modes:store.get('modes',['cw','ssb','ft8','fm']),band:store.get('band','40'),view:store.get('view','band'),hit:null};
+if(!BANDS.find(b=>b.id===state.band))state.band='40';
+
+const active=()=>state.modes.length?state.modes:MODES.map(m=>m.id);
+const allowed=b=>!!b.cls[state.cls];
+
+function merge(segs){const out=[];segs.forEach(s=>{const l=out[out.length-1];if(l&&Math.abs(l.hi-s.lo)<0.01)l.hi=s.hi;else out.push({lo:s.lo,hi:s.hi})});return out}
+function summary(b){
+  const res={};
+  res.cw={ranges:merge(b.segs.filter(s=>s.k==='cw'))};
+  res.ssb={ranges:merge(b.segs.filter(s=>s.k==='ssb'||s.k==='allmode'))};
+  res.fm={ranges:merge(b.segs.filter(s=>s.k==='fm'||s.k==='allmode'))};
+  res.ft8={freqs:b.mk.filter(m=>m.t==='ft8').map(m=>m.f)};
+  ['cw','ssb','fm'].forEach(md=>res[md].calls=b.mk.filter(m=>m.t==='call'&&m.mode===md));
+  return res;
+}
+function relevant(b,s){
+  const K=KINDS[s.k]; if(K.ex) return 'ex';
+  const a=active(); if(K.modes.some(m=>a.includes(m))) return 'on';
+  if(a.includes('ft8')&&b.mk.some(m=>m.t==='ft8'&&m.f>=s.lo&&m.f<s.hi)) return 'on';
+  return 'dim';
+}
+function showMarker(m){
+  const a=active();
+  if(m.t==='ft8') return a.includes('ft8');
+  if(m.t==='call') return a.includes(m.mode);
+  return true;
+}
+function fwBadge(b,s){const f=fwOf(b,s);if(!f||!active().includes('fm'))return '';return `<div class="fwb ${f[0]}">${esc(f[1])}</div>`}
+function fmWidth(b){
+  if(!FW[b.id]) return '';
+  const w=b.segs.filter(s=>{const f=fwOf(b,s);return f&&f[0]==='w'});
+  return w.length?`<em>Schmalband-FM (NBFM); Breit-FM nur ${w.map(s=>rng(s.lo,s.hi)).join(', ')}</em>`:'<em>Nur Schmalband-FM (NBFM, ±2,5 kHz Hub)</em>';
+}
+const pill=m=>`<span class="pill t-${m.t}"><b>${fmt(m.f)}</b>${esc(m.l)}</span>`;
+
+function goRows(b,compact){
+  const sm=summary(b),a=active();
+  return MODES.filter(m=>a.includes(m.id)).map(m=>{
+    let val='';
+    if(m.id==='ft8'){val=sm.ft8.freqs.length?sm.ft8.freqs.map(f=>`<span>${fmt(f)}</span>`).join('')+(compact?'':'<em>Dial-Frequenz, USB</em>'):''}
+    else{
+      const r=sm[m.id];
+      if(r.ranges.length){val=r.ranges.map(x=>`<span>${rng(x.lo,x.hi)}</span>`).join('');
+        if(r.calls.length) val+=`<em>Anruf ${r.calls.map(c=>fmt(c.f)).join(', ')}</em>`;
+        if(m.id==='fm') val+=fmWidth(b);
+        if(m.id==='cw'&&!compact) val+='<em>CW ist überall erlaubt, außer in Bakenbereichen</em>';
+      }else if(m.id==='cw'){val='<span class="none">überall außer Baken</span>'}
+    }
+    if(!val) val='<span class="none">'+(m.id==='ssb'&&b.id==='30'?'nicht erlaubt':'nicht vorgesehen')+'</span>';
+    return `<div class="row"><div class="md" style="--c:var(${m.c})"><i></i>${m.n}</div><div class="val">${val}</div></div>`;
+  }).join('');
+}
+function keepList(b){
+  const items=b.mk.filter(m=>m.t==='notfunk'||m.t==='bake').map(pill);
+  return items.join('');
+}
+
+/* ---------- Render ---------- */
+function renderControls(){
+  document.querySelectorAll('#cls button').forEach(bt=>bt.setAttribute('aria-pressed',String(bt.dataset.c===state.cls)));
+  const mc=document.getElementById('modes');
+  if(!mc.querySelector('.mode')){
+    MODES.forEach(m=>{const bt=document.createElement('button');bt.className='mode';bt.id='mode_'+m.id;bt.style.setProperty('--c',`var(${m.c})`);bt.innerHTML=`<i></i>${m.n}`;bt.dataset.m=m.id;
+      bt.onclick=()=>{const i=state.modes.indexOf(m.id);if(i>=0)state.modes.splice(i,1);else state.modes.push(m.id);store.set('modes',state.modes);render()};mc.appendChild(bt)});
+  }
+  MODES.forEach(m=>document.getElementById('mode_'+m.id).setAttribute('aria-pressed',String(active().includes(m.id)&&state.modes.length>0||state.modes.length===0)));
+  document.getElementById('tabBand').setAttribute('aria-pressed',String(state.view==='band'));
+  document.getElementById('tabSheet').setAttribute('aria-pressed',String(state.view==='sheet'));
+}
+function renderBands(){
+  const el=document.getElementById('bands');let g='',h='';
+  BANDS.forEach(b=>{
+    if(b.g!==g){g=b.g;h+=`<span class="grp">${g}</span>`}
+    const [n,u]=b.name.split(' ');
+    h+=`<button class="bchip${allowed(b)?'':' off'}" data-b="${b.id}" aria-current="${state.view==='band'&&b.id===state.band}" title="${allowed(b)?'':'nicht für Klasse '+state.cls}">${n}<small>${u}</small></button>`;
+  });
+  el.innerHTML=h;
+  el.querySelectorAll('.bchip').forEach(bt=>bt.onclick=()=>{state.band=bt.dataset.b;state.view='band';state.hit=null;store.set('band',state.band);store.set('view','band');render();window.scrollTo({top:0})});
+  const cur=el.querySelector('[aria-current="true"]');if(cur)cur.scrollIntoView({block:'nearest',inline:'nearest'});
+}
+function legend(){
+  const ks=['cw','schmal','ssb','allmode','fm','relais','bake','sat'];
+  return ks.map(k=>`<div class="${KINDS[k].ex?'ex':''}" style="--k:var(${KINDS[k].c})"><i></i>${KINDS[k].n}</div>`).join('')
+    +`<div><span class="fwb n">NBFM</span>Schmal, ±2,5 kHz Hub</div><div><span class="fwb w">Breit</span>Breit-FM, ±5 kHz zulässig</div>`;
+}
+function renderBand(){
+  const b=BANDS.find(x=>x.id===state.band), span=b.hi-b.lo;
+  let lad='';
+  b.segs.forEach(s=>{
+    const K=KINDS[s.k], r=relevant(b,s), h=46+Math.round((s.hi-s.lo)/span*300);
+    const mk=b.mk.filter(m=>m.f>=s.lo&&(m.f<s.hi||(m.f===s.hi&&s.hi===b.hi))&&showMarker(m));
+    const hit=state.hit&&state.hit.band===b.id&&state.hit.k>=s.lo&&state.hit.k<=s.hi;
+    lad+=`<div class="rung ${K.ex?'ex':''} ${r==='dim'?'dim':''} ${hit?'hit':''}" style="--k:var(${K.c});min-height:${h}px">
+      <div class="rf">${fmt(s.lo)}</div><div class="rbar"></div>
+      <div class="rbody"><div class="rl">${esc(s.l)}</div><div class="rk"><span class="mono">${rng(s.lo,s.hi)}</span> · ${K.n}</div>${fwBadge(b,s)}
+      ${mk.length?`<div class="pills">${mk.map(pill).join('')}</div>`:''}</div></div>`;
+  });
+  lad+=`<div class="rung end"><div class="rf">${fmt(b.hi)}</div><div></div><div class="rbody"></div></div>`;
+  const mini=b.segs.map(s=>`<div class="${KINDS[s.k].ex?'ex':''}" style="--k:var(${KINDS[s.k].c});flex:${s.hi-s.lo} 0 0" title="${esc(s.l)}"></div>`).join('');
+  const pw=b.cls[state.cls];
+  const keep=keepList(b);
+  return `<section class="bandview">
+    <div class="bandhead"><h2>${b.name}</h2><span class="range">${rng(b.lo,b.hi)} MHz</span>
+      <div class="pwr">${pw?`<span class="tag">Klasse ${state.cls}: ${pw}</span>`:`<span class="tag warn">Nicht für Klasse ${state.cls}</span>`}
+      ${Object.keys(b.cls).map(c=>`<span class="tag">${c}</span>`).join('')}</div></div>
+    ${pw?'':`<div class="notice">Mit Klasse ${state.cls} darfst du auf ${b.name} nicht senden. Zugelassen: Klasse ${Object.keys(b.cls).join(', ')}.</div>`}
+    <div class="minimap" aria-hidden="true">${mini}</div>
+    <div class="ladder" role="list" aria-label="Bandsegmente ${b.name}">${lad}</div>
+    <aside class="side">
+      <div class="card"><h3>Hier kannst du funken · MHz</h3><div class="go">${goRows(b,false)}</div></div>
+      ${keep?`<div class="card"><h3>Freihalten</h3><div class="keep">${keep}</div></div>`:''}
+      <div class="card"><h3>Hinweise ${b.name}</h3><ul class="notes">${b.notes.map(n=>`<li>${esc(n)}</li>`).join('')}</ul></div>
+      <div class="card"><h3>Legende</h3><div class="legend">${legend()}</div></div>
+    </aside></section>`;
+}
+function renderSheet(){
+  return `<section class="sheet">${BANDS.map(b=>{
+    const pw=b.cls[state.cls], keep=keepList(b);
+    return `<button class="scard${pw?'':' off'}" data-b="${b.id}">
+      <div class="sh"><b>${b.name}</b><span class="mono">${rng(b.lo,b.hi)}</span><span class="tag ${pw?'':'warn'}">${pw?pw:'nicht Kl. '+state.cls}</span></div>
+      <div class="go">${goRows(b,true)}</div>
+      ${keep?`<div class="keep">${keep}</div>`:''}</button>`}).join('')}</section>`;
+}
+function render(){
+  renderControls();renderBands();
+  const main=document.getElementById('main');
+  main.innerHTML=state.view==='band'?renderBand():renderSheet();
+  main.querySelectorAll('.scard').forEach(c=>c.onclick=()=>{state.band=c.dataset.b;state.view='band';store.set('band',state.band);store.set('view','band');render();window.scrollTo({top:0})});
+}
+
+/* ---------- Frequenz prüfen ---------- */
+function check(raw){
+  const out=document.getElementById('chkRes');
+  const t=raw.trim().replace(/\s/g,'').replace(',','.');
+  if(!t){out.innerHTML='';state.hit=null;if(state.view==='band')render();return}
+  const v=parseFloat(t);
+  if(isNaN(v)||v<=0){out.innerHTML=`<div class="result" style="margin-bottom:6px">Bitte eine Zahl eingeben, z.B. <span class="mono">14074</span> (kHz) oder <span class="mono">145,500</span> (MHz).</div>`;return}
+  const k=v<1000?v*1000:v;
+  const b=BANDS.find(x=>k>=x.lo&&k<=x.hi);
+  if(!b){
+    let near=BANDS.reduce((a,x)=>{const d=Math.min(Math.abs(k-x.lo),Math.abs(k-x.hi));return d<a.d?{d,x}:a},{d:Infinity}).x;
+    out.innerHTML=`<div class="result" style="--k:var(--k-bake);margin-bottom:6px"><strong>${fmt(k)} MHz liegt außerhalb der Amateurfunkbänder in DL.</strong><span class="okline">Nächstes Band: ${near.name} (${rng(near.lo,near.hi)} MHz).</span></div>`;
+    state.hit=null;return;
+  }
+  const s=b.segs.find(x=>k>=x.lo&&k<x.hi)||b.segs[b.segs.length-1];
+  const K=KINDS[s.k];
+  const tol=b.g==='KW'?3:12.5;
+  const warns=b.mk.filter(m=>(m.t==='notfunk'||m.t==='bake')&&Math.abs(m.f-k)<=tol).map(m=>m.t==='notfunk'?`Notfunk-Frequenz ${fmt(m.f)} in der Nähe – nur im Notfall belegen.`:`Bake auf ${fmt(m.f)} – nicht senden.`);
+  if(!allowed(b)) warns.unshift(`${b.name} ist für Klasse ${state.cls} nicht zugelassen.`);
+  const modes=K.ex?'Hier kein eigener Betrieb.':'Passend für: '+K.modes.map(m=>MODES.find(x=>x.id===m).n).join(', ')+(b.mk.some(m=>m.t==='ft8'&&m.f>=s.lo&&m.f<s.hi)?', FT8':'');
+  out.innerHTML=`<div class="result" style="--k:var(${K.c});margin-bottom:6px">
+    <strong>${b.name} · ${esc(s.l)}</strong><span class="mono">${rng(s.lo,s.hi)} MHz</span>
+    <button class="linkbtn" id="chkGo">Im Band zeigen</button>
+    <span class="okline">${K.n}. ${modes}</span>
+    ${fwOf(b,s)?`<span class="okline">FM-Bandbreite: ${esc(fwOf(b,s)[1])}</span>`:''}
+    ${warns.map(w=>`<span class="warnline">${esc(w)}</span>`).join('')}</div>`;
+  state.hit={band:b.id,k};
+  document.getElementById('chkGo').onclick=()=>{state.band=b.id;state.view='band';store.set('band',b.id);store.set('view','band');render();
+    const h=document.querySelector('.rung.hit');if(h)h.scrollIntoView({block:'center',behavior:'smooth'})};
+  if(state.view==='band'&&state.band===b.id)render();
+}
+
+document.querySelectorAll('#cls button').forEach(bt=>bt.onclick=()=>{state.cls=bt.dataset.c;store.set('cls',state.cls);render();check(document.getElementById('chk').value)});
+document.querySelectorAll('.tabs button').forEach(bt=>bt.onclick=()=>{state.view=bt.dataset.v;store.set('view',state.view);render()});
+document.getElementById('chk').addEventListener('input',e=>check(e.target.value));
+render();
+</script>
+
+</body></html>
