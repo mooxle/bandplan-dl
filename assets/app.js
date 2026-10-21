@@ -225,5 +225,16 @@ function applyHash(){
   readHash();render();check($('chk').value);
   if(state.hit) showHit();
 }
+/* ---------- Farbschema: auto (System) | hell | dunkel. Der gespeicherte Wert wird schon in theme.js (im <head>) gesetzt. ---------- */
+function applyTheme(t){
+  const r=document.documentElement;
+  if(t==='light'||t==='dark')r.dataset.theme=t;else delete r.dataset.theme;
+  document.querySelectorAll('#theme button').forEach(bt=>bt.setAttribute('aria-pressed',String(bt.dataset.t===t)));
+}
+let theme=store.get('theme','auto');
+if(!['auto','light','dark'].includes(theme))theme='auto';
+applyTheme(theme);
+document.querySelectorAll('#theme button').forEach(bt=>bt.onclick=()=>{theme=bt.dataset.t;store.set('theme',theme);applyTheme(theme)});
+
 addEventListener('hashchange',applyHash);
 applyHash();

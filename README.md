@@ -12,7 +12,7 @@ Interaktiver Amateurfunk-Bandplan für Deutschland als statische Webseite: KW (1
 - **Spickzettel.** Alle Bänder auf einen Blick, druckbar auf A4 (Browser-Druck).
 - **Frequenz prüfen.** Eingabe in kHz (`7074`), MHz (`145,5`) oder Hz (`14074000`). Zeigt Segment, passende Betriebsarten, FM-Bandbreite und warnt vor Notfunk- und Bakenfrequenzen in der Nähe. `Enter` springt ins Band, `Esc` löscht.
 - **Direktlinks.** `#40` öffnet ein Band, `#f=7.074` prüft eine Frequenz, `#spick` öffnet den Spickzettel.
-- Hell/Dunkel folgt der Systemeinstellung.
+- Hell/Dunkel: Umschalter „Design“ (Auto = Systemeinstellung, Hell, Dunkel); die Wahl bleibt im Browser gespeichert (`localStorage`).
 
 <p><img src="docs/screenshot-spickzettel.png" width="62%" alt="Spickzettel"> <img src="docs/screenshot-mobile.png" width="30%" alt="Mobilansicht 40 m"></p>
 

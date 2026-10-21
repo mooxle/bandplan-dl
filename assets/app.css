@@ -13,6 +13,7 @@
   --k-cw:#6a9bf0; --k-digi:#a585ec; --k-ssb:#47bf86; --k-all:#3cbaae; --k-fm:#f2894a;
   --k-ex:#6d787f; --k-bake:#ef6363; --k-sat:#d8b03e; color-scheme:dark;
 }}
+:root[data-theme="light"]{color-scheme:light}
 :root[data-theme="dark"]{
   --bg:#0d1113; --surface:#151a1d; --surface2:#1b2125; --ink:#e3e8eb; --muted:#94a0a7; --line:#2a3237;
   --accent:#f0a63a; --accent-soft:#3a2a12; --accent-ink:#1a1105;
@@ -44,6 +45,7 @@ header.top{display:grid;grid-template-columns:1fr auto;gap:12px 24px;align-items
 
 .controls{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;padding-block:4px 12px;border-bottom:1px solid var(--line)}
 .ctl{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ctl.theme{margin-left:auto}
 .ctl > .lbl{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600}
 .seg{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px}
 .seg button{border:0;background:transparent;padding:5px 13px;border-radius:999px;cursor:pointer;font-weight:700;font-stretch:90%}
