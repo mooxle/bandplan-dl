@@ -174,3 +174,9 @@ footer a{color:inherit}
   .rung,.card{break-inside:avoid}
   *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
+
+/* Impressum / Datenschutz (impressum.html) */
+.legal{padding-top:calc(env(safe-area-inset-top,0px) + 12px);max-width:720px}
+.legal h2{font-size:17px;margin:26px 0 6px}
+.legal p{margin:0 0 10px;color:var(--ink)}
+.legal a{color:var(--accent)}

@@ -54,6 +54,7 @@ Die Seite braucht keine externen Ressourcen: Die Schriften (Archivo, Chivo Mono)
 | Datei | Inhalt |
 |---|---|
 | `index.html` | Seitengerüst |
+| `impressum.html` | Impressum und Datenschutzhinweis (verlinkt im Footer) |
 | `assets/data.js` | Bandplan-Daten: Segmente, Marken, Klassen/Leistungen, Hinweise, FM-Bandbreiten |
 | `assets/app.js` | Rendering, Frequenz-Check, Zustand und Direktlinks |
 | `assets/app.css` | Styles inkl. Dark Mode und Druck |
