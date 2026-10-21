@@ -36,6 +36,8 @@ Live unter <https://bandplan-dl.sammet.me>. Jeder Push auf `main` im GitHub-Repo
 
 Benötigte Repository-Secrets: `CLOUDFLARE_API_TOKEN` (Recht: *Cloudflare Pages – Edit*) und `CLOUDFLARE_ACCOUNT_ID`. Die eigene Domain wird einmalig im Pages-Projekt unter *Custom domains* eingetragen.
 
+Ist für die Zone Web Analytics (RUM) mit automatischer Einbindung aktiv, fügt Cloudflare auf der eigenen Domain `beacon.min.js` ein. Die CSP blockiert das (Konsolenfehler), und es widerspräche „kein Tracking“ im Impressum. Abhilfe im Free-Tarif: in der Zone unter *Rules → Configuration Rules* eine Regel „Hostname equals bandplan-dl.sammet.me“ mit der Einstellung *Disable Real User Monitoring (RUM)* anlegen.
+
 ### Docker
 
 Ein schlankes Image auf Basis von `nginx-unprivileged` (läuft ohne root auf Port 8080) liefert die Ausgabe von `tools/build.sh` aus:
