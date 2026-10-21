@@ -1,0 +1,45 @@
+name: Build and Deploy to Cloudflare Pages
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+concurrency:
+  group: pages-deploy
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # kaputte Bandplan-Daten (Lücken, Marken außerhalb des Bandes, ...) gehen gar nicht erst online
+      - name: Validate data
+        run: node tools/validate.js
+
+      - name: Build
+        run: |
+          tools/build.sh dist
+          cp _headers dist/
+
+      # wrangler pages deploy legt im CI kein fehlendes Projekt an; existiert es schon, schlägt dieser Schritt fehl und wird ignoriert
+      - name: Create Pages project if missing
+        continue-on-error: true
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages project create bandplan-dl --production-branch=main
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=bandplan-dl --branch=main

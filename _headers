@@ -1,0 +1,8 @@
+# Cloudflare Pages: Sicherheits-Header (entspricht nginx.conf für den Docker-Betrieb).
+# Wird vom Deploy-Workflow nach dist/ kopiert.
+/*
+  Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: no-referrer
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Cross-Origin-Opener-Policy: same-origin

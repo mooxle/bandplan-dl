@@ -26,15 +26,25 @@ python3 -m http.server 8770
 
 Danach <http://localhost:8770> öffnen. Zum Hosten reicht jeder statische Webserver (nginx, Forgejo/GitHub Pages, …); alle Pfade sind relativ.
 
+### Build
+
+`tools/build.sh [Zielordner]` (Standard `dist/`, relativ zum Repo) kopiert die auslieferbaren Dateien (`index.html`, `impressum.html`, `assets/`) und hängt an jede JS/CSS-Referenz `?v=<Hash>` an. So holt der Browser nach einem Deploy sofort die neuen Dateien, auch wenn Cloudflare sie sonst 4 Stunden cachen würde. Docker und Cloudflare Pages nutzen beide dieses Skript; zum lokalen Entwickeln ist kein Build nötig.
+
+### Cloudflare Pages (Produktion)
+
+Live unter <https://bandplan-dl.sammet.me>. Jeder Push auf `main` im GitHub-Repo startet [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml). Der Workflow prüft die Daten (`node tools/validate.js`), baut nach `dist/`, legt die Sicherheits-Header aus [`_headers`](_headers) dazu und deployt mit `wrangler pages deploy` in das Pages-Projekt `bandplan-dl`. Ein fehlendes Projekt legt er beim ersten Lauf an. Manuell starten geht über *Actions → Run workflow*.
+
+Benötigte Repository-Secrets: `CLOUDFLARE_API_TOKEN` (Recht: *Cloudflare Pages – Edit*) und `CLOUDFLARE_ACCOUNT_ID`. Die eigene Domain wird einmalig im Pages-Projekt unter *Custom domains* eingetragen.
+
 ### Docker
 
-Ein schlankes Image auf Basis von `nginx-unprivileged` (läuft ohne root auf Port 8080) liefert nur `index.html` und `assets/` aus:
+Ein schlankes Image auf Basis von `nginx-unprivileged` (läuft ohne root auf Port 8080) liefert die Ausgabe von `tools/build.sh` aus:
 
 ```bash
 docker compose up -d --build
 ```
 
-Danach läuft die Seite auf <http://localhost:8095>. Einen anderen Port setzt du mit `BANDPLAN_PORT=9000 docker compose up -d` oder in einer `.env`. Der Container ist gehärtet: read-only Dateisystem, keine Capabilities, 64 MB RAM. Er hat einen Healthcheck auf `/healthz`. Die Sicherheits-Header (u. a. CSP) stehen in `nginx.conf`. HTML, JS und CSS werden mit `Cache-Control: no-cache` ausgeliefert, damit ein neues Deploy sofort sichtbar ist.
+Danach läuft die Seite auf <http://localhost:8095>. Einen anderen Port setzt du mit `BANDPLAN_PORT=9000 docker compose up -d` oder in einer `.env`. Der Container ist gehärtet: read-only Dateisystem, keine Capabilities, 64 MB RAM. Er hat einen Healthcheck auf `/healthz`. Die Sicherheits-Header (u. a. CSP) stehen in `nginx.conf` (für Pages gleichlautend in `_headers`). HTML, JS und CSS werden mit `Cache-Control: no-cache` ausgeliefert, damit ein neues Deploy sofort sichtbar ist.
 
 Ohne Compose geht es so:
 
@@ -60,6 +70,8 @@ Die Seite braucht keine externen Ressourcen: Die Schriften (Archivo, Chivo Mono)
 | `assets/app.css` | Styles inkl. Dark Mode und Druck |
 | `assets/fonts.css`, `assets/fonts/` | Selbst gehostete Schriften (woff2, Ausschnitte latin und latin-ext) |
 | `tools/validate.js` | Konsistenzprüfung der Daten |
+| `tools/build.sh` | Build nach `dist/` mit Cache-Busting |
+| `_headers`, `.github/workflows/deploy.yml` | Cloudflare Pages: Sicherheits-Header und automatischer Deploy |
 | `Dockerfile`, `nginx.conf`, `docker-compose.yml` | Container zum Deployen |
 | `docs/DATA.md` | Datenmodell, Quellen, bewusste Vereinfachungen |
 
@@ -87,3 +99,7 @@ Das Skript prüft, dass die Segmente jedes Band lückenlos abdecken, alle Marken
 - [IARU R1 UHF Bandplan 2020 (via IRTS)](https://www.irts.ie/dnloads/IARU-R1-Bandplan-UHF-2020.pdf)
 - [AFuV Anlage 1](https://www.gesetze-im-internet.de/afuv_2005/anlage_1.html)
 - [DARC Notfunk-Frequenzen (2022-09-13)](https://www.mikrocontroller.net/attachment/570850/darc_notfunk_Notfunkfrequenzen_2022-09-13.pdf)
+
+## Lizenz
+
+Code und Daten: [MIT](LICENSE). Die Schriften in `assets/fonts/` stehen unter der SIL Open Font License 1.1 ([`assets/fonts/LICENSE.md`](assets/fonts/LICENSE.md)).
