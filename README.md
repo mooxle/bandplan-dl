@@ -32,7 +32,7 @@ Danach <http://localhost:8770> öffnen. Zum Hosten reicht jeder statische Webser
 
 ### Cloudflare Pages (Produktion)
 
-Live unter <https://bandplan-dl.sammet.me>. Jeder Push auf `main` im GitHub-Repo startet [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml). Der Workflow prüft die Daten (`node tools/validate.js`), baut nach `dist/`, legt die Sicherheits-Header aus [`_headers`](_headers) dazu und deployt mit `wrangler pages deploy` in das Pages-Projekt `bandplan-dl`. Ein fehlendes Projekt legt er beim ersten Lauf an. Manuell starten geht über *Actions → Run workflow*.
+Live unter <https://bandplan-dl.sammet.me>. Jeder Push auf `main` im GitHub-Repo startet [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml). Der Workflow prüft die Daten (`node tools/validate.js`), baut nach `dist/`, legt die Sicherheits-Header aus [`_headers`](_headers) dazu und deployt mit `wrangler pages deploy` in das Pages-Projekt `bandplan-dl`. Das Projekt muss existieren (einmalig: `npx wrangler pages project create bandplan-dl --production-branch=main`). Manuell starten geht über *Actions → Run workflow*. Welche Version live ist, zeigt der Build-Stempel im Footer („Stand: <Commit> · <Datum>“).
 
 Benötigte Repository-Secrets: `CLOUDFLARE_API_TOKEN` (Recht: *Cloudflare Pages – Edit*) und `CLOUDFLARE_ACCOUNT_ID`. Die eigene Domain wird einmalig im Pages-Projekt unter *Custom domains* eingetragen.
 

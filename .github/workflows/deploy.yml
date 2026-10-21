@@ -28,15 +28,7 @@ jobs:
           tools/build.sh dist
           cp _headers dist/
 
-      # wrangler pages deploy legt im CI kein fehlendes Projekt an; existiert es schon, schlägt dieser Schritt fehl und wird ignoriert
-      - name: Create Pages project if missing
-        continue-on-error: true
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages project create bandplan-dl --production-branch=main
-
+      # Das Pages-Projekt muss existieren (einmalig angelegt am 21.10.2026; neu: npx wrangler pages project create bandplan-dl --production-branch=main)
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
