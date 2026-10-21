@@ -47,7 +47,7 @@ Hinter einem Reverse Proxy (Traefik, Caddy, nginx) einfach auf Port 8080 des Con
 
 ### Offline
 
-Ohne Internet funktioniert die Seite ebenfalls; nur die Webfonts (Archivo, Chivo Mono von Google Fonts) fallen dann auf Systemschriften zurück.
+Die Seite braucht keine externen Ressourcen: Die Schriften (Archivo, Chivo Mono) liegen selbst gehostet in `assets/fonts/` (Lizenz: SIL OFL 1.1, siehe `assets/fonts/LICENSE.md`). Es gibt keine Verbindung zu Google oder anderen Dritten; Besucher-IPs landen nirgends außer auf dem eigenen Server.
 
 ## Aufbau
 
@@ -57,6 +57,7 @@ Ohne Internet funktioniert die Seite ebenfalls; nur die Webfonts (Archivo, Chivo
 | `assets/data.js` | Bandplan-Daten: Segmente, Marken, Klassen/Leistungen, Hinweise, FM-Bandbreiten |
 | `assets/app.js` | Rendering, Frequenz-Check, Zustand und Direktlinks |
 | `assets/app.css` | Styles inkl. Dark Mode und Druck |
+| `assets/fonts.css`, `assets/fonts/` | Selbst gehostete Schriften (woff2, Ausschnitte latin und latin-ext) |
 | `tools/validate.js` | Konsistenzprüfung der Daten |
 | `Dockerfile`, `nginx.conf`, `docker-compose.yml` | Container zum Deployen |
 | `docs/DATA.md` | Datenmodell, Quellen, bewusste Vereinfachungen |
