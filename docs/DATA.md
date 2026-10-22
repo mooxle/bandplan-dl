@@ -54,7 +54,7 @@ Der Frequenz-Check warnt bei Notfunk/Baken im Abstand von ±3 kHz (KW) bzw. ±12
 - die **tiefste** LSB-Dial-Frequenz: 1843, 3603, 7053 kHz (darunter läge das Signal außerhalb des Phonie-Bereichs),
 - die **höchste** USB-Dial-Frequenz: 3 kHz unter der oberen Bandgrenze auf 20–10 m (14 347, 18 165, 21 447, 24 987, 29 697 kHz) und 5363 kHz auf 60 m.
 
-Die Seite zeigt die Grenze als gestrichelte Marke in der Frequenzleiter, unter „Hier kannst du funken“ und im Spickzettel (jeweils nur bei aktivem SSB) und warnt im Frequenz-Check, wenn eine Eingabe darüber bzw. knapp darunter liegt. Angeregt von Heinz, DK5UR.
+Die Seite zeigt die Grenze als gestrichelte Marke in der Frequenzleiter, unter „Hier kannst du funken“ und im Spickzettel (jeweils nur bei aktivem SSB) und warnt im Frequenz-Check, wenn eine Eingabe darüber bzw. knapp darunter liegt. Die Begründung steht als „Warum?“ in der Karte „Hinweise“ des Bandes und als Tooltip auf der Marke. Angeregt von Heinz, DK5UR.
 
 ## Quellen und Stand
 

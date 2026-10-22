@@ -1,6 +1,6 @@
 /* Bandplan DL – Logik (Rendering, Frequenz-Check, Zustand). Daten kommen aus data.js. */
 
-const VERSION='1.2.0';  // bei jedem Release erhöhen, zusammen mit CHANGELOG.md (siehe README, „Release erstellen“)
+const VERSION='1.2.1';  // bei jedem Release erhöhen, zusammen mit CHANGELOG.md (siehe README, „Release erstellen“)
 
 /* ---------- Helfer ---------- */
 const fwOf=(b,s)=>(FW[b.id]||{})[s.lo];
@@ -72,7 +72,15 @@ function showMarker(m){
 /* Dial-Grenze für SSB-Sprache (DIAL in data.js) als Marke in der Leiter und als Hinweis bei SSB */
 function dialMarks(b){
   const d=DIAL[b.id]; if(!d) return [];
-  return d.sb==='LSB'?[M(d.min,'dial','LSB-Sprache: Dial nicht tiefer')]:[M(d.max,'dial','USB-Sprache: Dial nicht höher')];
+  const m=d.sb==='LSB'?M(d.min,'dial','LSB-Sprache: Dial nicht tiefer'):M(d.max,'dial','USB-Sprache: Dial nicht höher');
+  m.title=dialWhy(b);
+  return [m];
+}
+/* Warum: Das Gerät zeigt die (unterdrückte) Trägerfrequenz, das Seitenband liegt bis ca. 2,7 kHz daneben. */
+function dialWhy(b){
+  const d=DIAL[b.id]; if(!d) return '';
+  if(d.sb==='LSB') return `Warum? Bei SSB zeigt das Gerät die Trägerfrequenz, das LSB-Signal liegt bis ca. 2,7 kHz darunter. Auf ${fmt(d.min-2)} sendest du also ab ${fmt(d.min-4.7)} MHz, unterhalb des Phonie-Bereichs ab ${fmt(d.min-3)}. Deshalb Dial nicht unter ${fmt(d.min)}.`;
+  return `Warum? Bei SSB zeigt das Gerät die Trägerfrequenz, das USB-Signal liegt bis ca. 2,7 kHz darüber. Auf ${fmt(b.hi)} sendest du also bis ${fmt(b.hi+2.7)} MHz, außerhalb des Bandes. Deshalb Dial höchstens ${fmt(d.max)}.`;
 }
 function dialHint(b,compact){
   const d=DIAL[b.id]; if(!d) return '';
@@ -85,7 +93,7 @@ function fmWidth(b){
   const w=b.segs.filter(s=>{const f=fwOf(b,s);return f&&f[0]==='w'});
   return w.length?`<em>Schmalband-FM (NBFM); Breit-FM nur ${w.map(s=>rng(s.lo,s.hi)).join(', ')}</em>`:'<em>Nur Schmalband-FM (NBFM, ±2,5 kHz Hub)</em>';
 }
-const pill=m=>`<span class="pill t-${m.t}"><b>${fmt(m.f)}</b>${esc(m.l)}</span>`;
+const pill=m=>`<span class="pill t-${m.t}"${m.title?` title="${esc(m.title)}"`:''}><b>${fmt(m.f)}</b>${esc(m.l)}</span>`;
 
 function goRows(b,compact){
   const sm=summary(b),a=active();
@@ -164,6 +172,7 @@ function renderBand(){
   lad+=`<div class="rung end" aria-hidden="true"><div class="rf">${fmt(b.hi)}</div><div></div><div class="rbody"></div></div>`;
   const mini=b.segs.map(s=>`<div class="${KINDS[s.k].ex?'ex':''}" style="--k:var(${KINDS[s.k].c});flex:${s.hi-s.lo} 0 0" title="${esc(s.l)}"></div>`).join('');
   const pw=b.cls[state.cls], cl=Object.keys(b.cls).join(' · ');
+  const notes=b.notes.concat(DIAL[b.id]&&active().includes('ssb')?[dialWhy(b)]:[]);
   const keep=keepList(b);
   return `<section class="bandview">
     <div class="bandhead"><h2>${b.name}</h2><span class="range">${rng(b.lo,b.hi)} MHz</span>
@@ -175,7 +184,7 @@ function renderBand(){
     <aside class="side">
       <div class="card"><h3>Hier kannst du funken · MHz</h3><div class="go">${goRows(b,false)}</div></div>
       ${keep?`<div class="card"><h3>Freihalten</h3><div class="keep">${keep}</div></div>`:''}
-      ${b.notes.length?`<div class="card"><h3>Hinweise ${b.name}</h3><ul class="notes">${b.notes.map(n=>`<li>${esc(n)}</li>`).join('')}</ul></div>`:''}
+      ${notes.length?`<div class="card"><h3>Hinweise ${b.name}</h3><ul class="notes">${notes.map(n=>`<li>${esc(n)}</li>`).join('')}</ul></div>`:''}
       <div class="card"><h3>Legende</h3><div class="legend">${legend()}</div></div>
     </aside></section>`;
 }

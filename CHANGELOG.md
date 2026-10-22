@@ -2,6 +2,10 @@
 
 Alle nennenswerten Änderungen an Bandplan DL. Versionen nach [Semantic Versioning](https://semver.org/lang/de/): Patch für Korrekturen (auch an Bandplan-Daten), Minor für neue Funktionen, Major für grundlegende Umbauten.
 
+## [1.2.1] - 2026-10-22
+### Geändert
+- Dial-Grenzen für SSB-Sprache mit Begründung: In der Karte „Hinweise“ jedes betroffenen Bandes (bei aktivem SSB) und als Tooltip auf der gestrichelten Marke steht jetzt, warum. Das Gerät zeigt die Trägerfrequenz, das Seitenband liegt bis ca. 2,7 kHz daneben. Auf 14,350 MHz USB sendest du also bis 14,3527 MHz, außerhalb des Bandes.
+
 ## [1.2.0] - 2026-10-22
 ### Neu
 - Dial-Grenzen für SSB-Sprache nach IARU-R1-KW-Bandplan: höchste USB-Dial-Frequenz 3 kHz unter der oberen Bandgrenze (20 m 14,347 · 17 m 18,165 · 15 m 21,447 · 12 m 24,987 · 10 m 29,697 MHz; 60 m 5,363 MHz), tiefste LSB-Dial-Frequenz wie bisher (1,843 · 3,603 · 7,053 MHz). Sichtbar als gestrichelte Marke in der Frequenzleiter, unter „Hier kannst du funken“ und im Spickzettel; der Frequenz-Check warnt, wenn das Signal über die Bandgrenze bzw. unter den Phonie-Bereich ragen würde. Danke an Heinz, DK5UR, für die Anregung („Wie oft sieht man Kollegen auf 14.350 …“).
@@ -35,6 +39,7 @@ Erstes Release.
 - Docker-Image (nginx, non-root) für den eigenen Betrieb.
 - Cache-Busting per Inhalts-Hash an jeder JS/CSS-Referenz, Build-Stempel (Commit und Datum) im Footer.
 
+[1.2.1]: https://github.com/mooxle/bandplan-dl/releases/tag/v1.2.1
 [1.2.0]: https://github.com/mooxle/bandplan-dl/releases/tag/v1.2.0
 [1.1.0]: https://github.com/mooxle/bandplan-dl/releases/tag/v1.1.0
 [1.0.0]: https://github.com/mooxle/bandplan-dl/releases/tag/v1.0.0
