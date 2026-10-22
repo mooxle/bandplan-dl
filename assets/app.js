@@ -1,6 +1,6 @@
 /* Bandplan DL – Logik (Rendering, Frequenz-Check, Zustand). Daten kommen aus data.js. */
 
-const VERSION='1.2.1';  // bei jedem Release erhöhen, zusammen mit CHANGELOG.md (siehe README, „Release erstellen“)
+const VERSION='1.3.0';  // bei jedem Release erhöhen, zusammen mit CHANGELOG.md (siehe README, „Release erstellen“)
 
 /* ---------- Helfer ---------- */
 const fwOf=(b,s)=>(FW[b.id]||{})[s.lo];
@@ -20,13 +20,17 @@ if(!['band','sheet'].includes(state.view))state.view='band';
 const active=()=>state.modes;
 const allowed=b=>!!b.cls[state.cls];
 
-/* Eingabe → kHz. Werte < 1000 gelten als MHz, ab 1 000 000 als Hz, sonst kHz. Komma und Punkt als Dezimaltrenner. */
+/* Eingabe → kHz. Werte < 1000 gelten als MHz, ab 1 000 000 als Hz, sonst kHz. Komma und Punkt als Dezimaltrenner.
+   Liegt dieser Wert in keinem Band, gilt die erste andere Lesart (kHz, MHz, Hz), die in einem Band liegt
+   (z. B. 1296,2 → MHz und 1296174 → kHz für 23 cm). */
 function parseFreq(raw){
   const t=raw.trim().replace(/\s/g,'').replace(/(k|m)?hz$/i,'').replace(',','.');
   if(!/^\d+(\.\d+)?$/.test(t)) return NaN;
   const v=parseFloat(t);
   if(v<=0) return NaN;
-  return v<1000?v*1000:v>=1e6?v/1000:v;
+  const k=v<1000?v*1000:v>=1e6?v/1000:v;
+  const inBand=x=>BANDS.some(b=>x>=b.lo&&x<=b.hi);
+  return inBand(k)?k:[v,v*1000,v/1000].find(inBand)||k;
 }
 
 /* ---------- Deep-Links: #40 (Band), #f=7.074 (Frequenz), #spick (Spickzettel) ---------- */
@@ -91,6 +95,7 @@ function fwBadge(b,s){const f=fwOf(b,s);if(!f||!active().includes('fm'))return '
 function fmWidth(b){
   if(!FW[b.id]) return '';
   const w=b.segs.filter(s=>{const f=fwOf(b,s);return f&&f[0]==='w'});
+  if(Object.values(FW[b.id]).every(f=>f[0]==='w')) return '<em>FM bis 20 kHz Bandbreite, Breit-FM (±5 kHz) zulässig</em>';
   return w.length?`<em>Schmalband-FM (NBFM); Breit-FM nur ${w.map(s=>rng(s.lo,s.hi)).join(', ')}</em>`:'<em>Nur Schmalband-FM (NBFM, ±2,5 kHz Hub)</em>';
 }
 const pill=m=>`<span class="pill t-${m.t}"${m.title?` title="${esc(m.title)}"`:''}><b>${fmt(m.f)}</b>${esc(m.l)}</span>`;
@@ -162,7 +167,8 @@ function renderBand(){
   let lad='';
   b.segs.forEach(s=>{
     const K=KINDS[s.k], r=relevant(b,s), h=46+Math.round((s.hi-s.lo)/span*300);
-    const mk=marks.filter(m=>m.f>=s.lo&&(m.f<s.hi||(m.f===s.hi&&s===last))&&showMarker(m));
+    const mk=marks.filter((m,i)=>m.f>=s.lo&&(m.f<s.hi||(m.f===s.hi&&s===last))&&showMarker(m)
+      &&!marks.slice(0,i).some(o=>o.f===m.f&&o.l===m.l&&showMarker(o)));  // gleiche Marke für mehrere Betriebsarten nur einmal
     const hit=state.hit&&state.hit.band===b.id&&state.hit.k>=s.lo&&(state.hit.k<s.hi||s===last);
     lad+=`<div role="listitem" class="rung ${K.ex?'ex':''} ${r==='dim'?'dim':''} ${hit?'hit':''}" style="--k:var(${K.c});min-height:${h}px">
       <div class="rf">${fmt(s.lo)}</div><div class="rbar"></div>

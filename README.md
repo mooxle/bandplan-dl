@@ -1,6 +1,6 @@
 # Bandplan DL
 
-Interaktiver Amateurfunk-Bandplan für Deutschland als statische Webseite: KW (160–10 m), 6 m, 2 m und 70 cm nach IARU Region 1, mit Lizenzklassen und Leistungen aus der AFuV. Gedacht für Handy und Rechner, auch für den Portabelbetrieb (POTA).
+Interaktiver Amateurfunk-Bandplan für Deutschland als statische Webseite: KW (160–10 m), 6 m, 2 m, 70 cm und 23 cm nach IARU Region 1, mit Lizenzklassen und Leistungen aus der AFuV. Gedacht für Handy und Rechner, auch für den Portabelbetrieb (POTA).
 
 ![Bandansicht 2 m](docs/screenshot-band.png)
 
@@ -95,7 +95,8 @@ Das Skript prüft, dass die Segmente jedes Band lückenlos abdecken, alle Marken
 - Der Bandplan ist eine **Empfehlung** der IARU; rechtlich verbindlich sind nur Frequenzbereiche, Leistungen und Bandbreiten der AFuV.
 - Der nationale DARC-Plan kann im Detail abweichen, besonders bei der 70-cm-Relaisbelegung. Für Relais immer die aktuelle Relaisliste prüfen.
 - Nur die Betriebsarten CW, SSB, FT8 und FM sind ausgewertet; andere Digimodes, DV, ATV usw. erscheinen nur als Segmentbezeichnung oder Marke.
-- Bänder unter 160 m (2200 m, 630 m) und oberhalb 70 cm sind nicht enthalten.
+- Bänder unter 160 m (2200 m, 630 m) und oberhalb 23 cm sind nicht enthalten.
+- 23 cm ist sekundär zugewiesen (Primärnutzer Ortungsfunk und Satellitennavigation); die nationale DL-Belegung (Relais, ATV) kann vom IARU-Plan abweichen.
 
 ## Quellen
 
@@ -125,6 +126,7 @@ Versionen nach Semantic Versioning, Änderungen stehen in [`CHANGELOG.md`](CHANG
 ## Danke
 
 - **Heinz, [DK5UR](https://www.qrz.com/db/DK5UR)**, für den Hinweis, neben der tiefsten LSB- auch die höchste USB-Dial-Frequenz anzuzeigen. Wer auf 14,350 MHz USB einstellt, sendet bis knapp 14,353 MHz, also außerhalb des Bandes (seit v1.2.0).
+- **Nils, [DB6NL](https://www.qrz.com/db/DB6NL)**, für den Vorschlag, das 23-cm-Band aufzunehmen (seit v1.3.0).
 
 ## Lizenz
 

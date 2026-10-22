@@ -63,11 +63,13 @@ Die Seite zeigt die Grenze als gestrichelte Marke in der Frequenzleiter, unter �
 | KW-Segmente | IARU R1 HF Bandplan | gültig ab 16.10.2020 |
 | 6 m, 2 m | IARU R1 VHF Handbook 10.03 | Feb. 2026 |
 | 70 cm | IARU R1 VHF Handbook 10.03 / UHF-Bandplan 2020 | Feb. 2026 |
+| 23 cm | IARU R1 VHF Handbook 10.03, Abschnitt 1200–1300 MHz | Feb. 2026 |
 | Klassen, Leistungen, Bandbreiten | AFuV Anlage 1 | Fassung 2024, geprüft 21.10.2026 |
 | Notfunk | DARC-Notfunkreferat | 13.09.2022 |
 
 ## Bewusste Vereinfachungen
 
+- **23 cm:** Die drei für die Zukunft reservierten Schmalband-Teile 1240,000–1241,000 MHz (All Mode, CW/MGM/Baken, FM/DV) sind zusammen mit der dort genannten digitalen Kommunikation als ein Datensegment geführt. Die ATV-Bereiche (inkl. ATV-Relais-Ausgaben 1258,150–1259,350 und -Eingaben 1293,150–1294,350 MHz) erscheinen als „Sonstige Nutzung“. FM-Segmente sind als bis 20 kHz Bandbreite (Breit-FM zulässig) gekennzeichnet, entsprechend der IARU-Angabe. Vorgeschlagen von Nils, DB6NL.
 - **70 cm, 432,000–432,400 MHz:** Die IARU führt das als einen Schmalbandbereich. Hier geteilt in „CW bevorzugt“ (bis 432,100) und „SSB/FT8“, damit die Leiter lesbarer ist.
 - **Automatische Digi-Stationen** (IARU „automatically controlled data stations“) sind als `auto` unter Digimodes eingeordnet; 40 m 7,047–7,053 ist zu einem Segment zusammengefasst.
 - **10 m, 28,190–28,225 MHz:** IBP-Baken (28,199–28,201) und Dauerbaken sind zu einem Bakensegment zusammengefasst.

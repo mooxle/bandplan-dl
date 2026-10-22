@@ -2,6 +2,14 @@
 
 Alle nennenswerten Änderungen an Bandplan DL. Versionen nach [Semantic Versioning](https://semver.org/lang/de/): Patch für Korrekturen (auch an Bandplan-Daten), Minor für neue Funktionen, Major für grundlegende Umbauten.
 
+## [1.3.0] - 2026-10-22
+### Neu
+- 23-cm-Band (1240–1300 MHz) nach IARU-R1 VHF Handbook 10.03: Segmente von Digital/ATV über Satelliten bis Schmalband 1296 MHz (CW/EME, SSB, Baken), FM/DV-Relais RM und RS, Simplex, Highspeed-Daten. Marken für FT8 (1296,174), CW/SSB-Anruf (1296,200), FM-Anruf (1297,500) und DV-Anruf (1297,725). Klassen A (750 W PEP) und E (75 W PEP), Hinweis auf die AFuV-Einschränkung 1247–1263 MHz (max. 3,05 W ERP). Danke an Nils, DB6NL, für den Vorschlag.
+
+### Behoben
+- Frequenz-Check: Eingaben, die in der Standard-Lesart in keinem Band liegen, werden jetzt auch als kHz, MHz oder Hz geprüft. Vorher wurde z. B. `1296,2` als kHz und `1296174` als Hz gelesen.
+- Gleiche Marken für mehrere Betriebsarten (z. B. gemeinsamer CW/SSB-Anruf) erscheinen in der Frequenzleiter nur einmal.
+
 ## [1.2.1] - 2026-10-22
 ### Geändert
 - Dial-Grenzen für SSB-Sprache mit Begründung: In der Karte „Hinweise“ jedes betroffenen Bandes (bei aktivem SSB) und als Tooltip auf der gestrichelten Marke steht jetzt, warum. Das Gerät zeigt die Trägerfrequenz, das Seitenband liegt bis ca. 2,7 kHz daneben. Auf 14,350 MHz USB sendest du also bis 14,3527 MHz, außerhalb des Bandes.
@@ -39,6 +47,7 @@ Erstes Release.
 - Docker-Image (nginx, non-root) für den eigenen Betrieb.
 - Cache-Busting per Inhalts-Hash an jeder JS/CSS-Referenz, Build-Stempel (Commit und Datum) im Footer.
 
+[1.3.0]: https://github.com/mooxle/bandplan-dl/releases/tag/v1.3.0
 [1.2.1]: https://github.com/mooxle/bandplan-dl/releases/tag/v1.2.1
 [1.2.0]: https://github.com/mooxle/bandplan-dl/releases/tag/v1.2.0
 [1.1.0]: https://github.com/mooxle/bandplan-dl/releases/tag/v1.1.0
