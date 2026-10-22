@@ -1,6 +1,6 @@
 /* Bandplan DL – Logik (Rendering, Frequenz-Check, Zustand). Daten kommen aus data.js. */
 
-const VERSION='1.0.0';  // bei jedem Release erhöhen, zusammen mit CHANGELOG.md (siehe README, „Release erstellen“)
+const VERSION='1.1.0';  // bei jedem Release erhöhen, zusammen mit CHANGELOG.md (siehe README, „Release erstellen“)
 
 /* ---------- Helfer ---------- */
 const fwOf=(b,s)=>(FW[b.id]||{})[s.lo];
@@ -126,7 +126,9 @@ function renderBands(){
   });
   el.innerHTML=h;
   el.querySelectorAll('.bchip').forEach(bt=>bt.onclick=()=>openBand(bt.dataset.b));
-  const cur=el.querySelector('[aria-current="true"]');if(cur)cur.scrollIntoView({block:'nearest',inline:'nearest'});
+  // aktiven Chip in der Leiste mittig zeigen; nur waagerecht scrollen (scrollIntoView würde ggf. die ganze Seite verschieben)
+  const cur=el.querySelector('[aria-current="true"]');
+  if(cur)el.scrollLeft+=cur.getBoundingClientRect().left-el.getBoundingClientRect().left-(el.clientWidth-cur.offsetWidth)/2;
 }
 function legend(){
   const ks=['cw','schmal','ssb','allmode','fm','relais','bake','sat'];

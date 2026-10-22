@@ -52,6 +52,8 @@ header.top{display:grid;grid-template-columns:1fr auto;grid-template-areas:"bran
 .theme-toggle.is-dark .theme-icon-moon{display:block}
 .brand h1{margin:0;font-weight:800;font-stretch:72%;font-size:clamp(30px,6vw,46px);line-height:.95;letter-spacing:-.01em;text-transform:uppercase}
 .brand h1 span{color:var(--accent)}
+.brand h1{display:flex;align-items:center;gap:.22em}
+.brand h1 .mark{height:.95em;width:auto;flex:none}
 .brand p{margin:6px 0 0;color:var(--muted);font-size:13.5px}
 .check{display:flex;flex-direction:column;gap:6px;min-width:0}
 .check label{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600}

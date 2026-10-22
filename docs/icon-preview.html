@@ -1,0 +1,19 @@
+<!doctype html>
+<!-- Vorschau für docs/ICON.md: Icon in allen Größen, im Browser-Tab und neben dem Schriftzug, hell und dunkel.
+     Aufruf über den lokalen Server (python3 -m http.server 8770), dann http://localhost:8770/docs/icon-preview.html -->
+<html lang="de"><head><meta charset="utf-8"><title>Icon-Vorschau – Bandplan DL</title>
+<link rel="stylesheet" href="../assets/fonts.css">
+<style>
+body{margin:0;font-family:Archivo,sans-serif}
+.row{display:flex;gap:28px;align-items:center;padding:22px 28px}
+.l{background:#edf0f1;color:#131a1f}.d{background:#0d1113;color:#e3e8eb}
+h1{margin:0;font-weight:800;font-stretch:72%;font-size:46px;line-height:.95;text-transform:uppercase;display:flex;align-items:center;gap:.22em}
+h1 span{color:#c97a12}.d h1 span{color:#f0a63a}h1 img{height:.95em}
+small{font-size:11px;opacity:.6;display:block;text-align:center;margin-top:4px}
+.tab{background:#dfe3e6;border-radius:8px 8px 0 0;padding:6px 10px;display:flex;gap:6px;align-items:center;font:12px -apple-system,sans-serif}.d .tab{background:#2a3237}
+</style></head><body>
+<div class="row l"></div><div class="row d"></div>
+<script>
+const cells=`<div><img src="../assets/icon.svg" width="16"><small>16</small></div><div><img src="../assets/icon.svg" width="32"><small>32</small></div><div><img src="../assets/icon.svg" width="64"><small>64</small></div><div><img src="../assets/apple-touch-icon.png" width="64" style="border-radius:14px"><small>Homescreen</small></div><div><img src="../assets/mark.svg" width="16"><small>16 ohne</small></div><div><img src="../assets/mark.svg" width="32"><small>32 ohne</small></div><div class="tab"><img src="../assets/icon.svg" width="16">Bandplan DL</div><h1><img src="../assets/mark.svg" alt="">Bandplan <span>DL</span></h1>`;
+document.querySelectorAll('.row').forEach(r=>r.innerHTML=cells);
+</script></body></html>

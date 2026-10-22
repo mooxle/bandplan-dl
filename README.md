@@ -70,12 +70,14 @@ Die Seite braucht keine externen Ressourcen: Die Schriften (Archivo, Chivo Mono)
 | `assets/data.js` | Bandplan-Daten: Segmente, Marken, Klassen/Leistungen, Hinweise, FM-Bandbreiten |
 | `assets/app.js` | Rendering, Frequenz-Check, Zustand und Direktlinks |
 | `assets/app.css` | Styles inkl. Dark Mode und Druck |
+| `assets/icon.svg`, `assets/mark.svg`, `assets/apple-touch-icon.png` | Favicon, Marke vor dem Schriftzug, Homescreen-Icon ([`docs/ICON.md`](docs/ICON.md)) |
 | `assets/fonts.css`, `assets/fonts/` | Selbst gehostete Schriften (woff2, Ausschnitte latin und latin-ext) |
 | `tools/validate.js` | Konsistenzprüfung der Daten |
 | `tools/build.sh` | Build nach `dist/` mit Cache-Busting |
 | `_headers`, `.github/workflows/deploy.yml` | Cloudflare Pages: Sicherheits-Header und automatischer Deploy |
 | `Dockerfile`, `nginx.conf`, `docker-compose.yml` | Container zum Deployen |
 | `docs/DATA.md` | Datenmodell, Quellen, bewusste Vereinfachungen |
+| `docs/ICON.md`, `docs/icon-preview.html` | Icon: Idee, Farben, Dateien, Vorschau |
 
 ## Daten pflegen
 

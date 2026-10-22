@@ -1,0 +1,11 @@
+<!-- Bandplan DL – Marke ohne Kachel (vor dem Schriftzug). Design und Farben: docs/ICON.md -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <defs><clipPath id="bar"><rect x="3" y="14" width="26" height="12" rx="2.5"/></clipPath></defs>
+  <g clip-path="url(#bar)">
+    <rect x="3" y="14" width="8" height="12" fill="#2c68d0"/>
+    <rect x="11" y="14" width="5" height="12" fill="#7547c9"/>
+    <rect x="16" y="14" width="6" height="12" fill="#1f8c59"/>
+    <rect x="22" y="14" width="7" height="12" fill="#d8601a"/>
+  </g>
+  <path d="M14.5 4.5h9L19 11.5z" fill="#e8951c" stroke="#e8951c" stroke-width="1.5" stroke-linejoin="round"/>
+</svg>
