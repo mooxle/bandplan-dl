@@ -27,19 +27,19 @@ const BANDS=[
 {id:'160',name:'160 m',g:'KW',lo:1810,hi:2000,cls:{A:'750 / 75 / 10 W PEP',E:'100 / 75 / 10 W PEP'},
  segs:[S(1810,1838,'cw','CW'),S(1838,1840,'schmal','Schmalband'),S(1840,1843,'schmal','Digimodes'),S(1843,2000,'ssb','Alle Modes · SSB')],
  mk:[M(1836,'qrp','CW QRP'),M(1840,'ft8','FT8')],
- notes:['Leistung: 1810–1850 kHz A 750 W / E 100 W · 1850–1890 kHz 75 W · 1890–2000 kHz 10 W. Am Wochenende auch oberhalb 1850 kHz A 750 W / E 100 W.','1850–2000 kHz sekundär, werktags kein Contest.','Max. 2,7 kHz Bandbreite.','LSB; tiefste Dial-Frequenz für Sprache 1843 kHz.','1907,5–1912,5 kHz (japanisches DX-Fenster) freihalten.']},
+ notes:['Leistung: 1810–1850 kHz A 750 W / E 100 W · 1850–1890 kHz 75 W · 1890–2000 kHz 10 W. Am Wochenende auch oberhalb 1850 kHz A 750 W / E 100 W.','1850–2000 kHz sekundär, werktags kein Contest.','Max. 2,7 kHz Bandbreite.','1907,5–1912,5 kHz (japanisches DX-Fenster) freihalten.']},
 {id:'80',name:'80 m',g:'KW',lo:3500,hi:3800,cls:{A:'750 W PEP',E:'100 W PEP'},
  segs:[S(3500,3510,'cw','CW · DX-Vorrang'),S(3510,3560,'cw','CW · Contest bevorzugt'),S(3560,3570,'cw','CW'),S(3570,3580,'schmal','Digimodes (200 Hz)'),S(3580,3590,'schmal','Digimodes'),S(3590,3600,'auto','Digimodes · automatisch'),S(3600,3620,'ssb','Alle Modes · auch Digimodes'),S(3620,3775,'ssb','Alle Modes · SSB'),S(3775,3800,'ssb','SSB · DX-Vorrang')],
  mk:[M(3555,'qrp','CW QRS'),M(3560,'qrp','CW QRP'),M(3573,'ft8','FT8'),M(3630,'info','Digital Voice'),M(3690,'qrp','SSB QRP'),M(3735,'info','SSTV/Bild'),M(3760,'notfunk','Notfunk')],
- notes:['LSB; tiefste Dial-Frequenz für Sprache 3603 kHz.']},
+ notes:[]},
 {id:'60',name:'60 m',g:'KW',lo:5351.5,hi:5366.5,cls:{A:'9,14 W ERP'},
  segs:[S(5351.5,5354,'schmal','CW · Schmalband'),S(5354,5366,'ssb','Alle Modes · USB'),S(5366,5366.5,'schmal','Weak Signal (20 Hz)')],
  mk:[M(5357,'ft8','FT8')],
- notes:['Nur Klasse A, max. 9,14 W ERP (≈ 15 W EIRP), sekundär.','USB; höchste Dial-Frequenz für Sprache 5363 kHz.','Kein Contest. Lange Runden besser auf 80 oder 40 m.']},
+ notes:['Nur Klasse A, max. 9,14 W ERP (≈ 15 W EIRP), sekundär.','Kein Contest. Lange Runden besser auf 80 oder 40 m.']},
 {id:'40',name:'40 m',g:'KW',lo:7000,hi:7200,cls:{A:'750 W PEP'},
  segs:[S(7000,7040,'cw','CW'),S(7040,7047,'schmal','Digimodes'),S(7047,7053,'auto','Digimodes · automatisch'),S(7053,7060,'ssb','Alle Modes · bevorzugt Digimodes'),S(7060,7175,'ssb','Alle Modes · SSB'),S(7175,7200,'ssb','SSB · DX-Vorrang')],
  mk:[M(7030,'qrp','CW QRP'),M(7070,'info','Digital Voice'),M(7074,'ft8','FT8'),M(7090,'qrp','SSB QRP'),M(7110,'notfunk','Notfunk'),M(7165,'info','SSTV/Bild')],
- notes:['LSB; tiefste Dial-Frequenz für Sprache 7053 kHz.']},
+ notes:[]},
 {id:'30',name:'30 m',g:'KW',lo:10100,hi:10150,cls:{A:'150 W PEP'},
  segs:[S(10100,10130,'cw','CW'),S(10130,10150,'schmal','Digimodes')],
  mk:[M(10116,'qrp','CW QRP'),M(10136,'ft8','FT8')],
@@ -47,19 +47,19 @@ const BANDS=[
 {id:'20',name:'20 m',g:'KW',lo:14000,hi:14350,cls:{A:'750 W PEP'},
  segs:[S(14000,14060,'cw','CW · Contest bevorzugt'),S(14060,14070,'cw','CW'),S(14070,14089,'schmal','Digimodes'),S(14089,14099,'auto','Digimodes · automatisch'),S(14099,14101,'bake','IBP-Baken'),S(14101,14112,'auto','Digimodes · automatisch'),S(14112,14125,'ssb','Alle Modes'),S(14125,14300,'ssb','Alle Modes · SSB'),S(14300,14350,'ssb','Alle Modes')],
  mk:[M(14055,'qrp','CW QRS'),M(14060,'qrp','CW QRP'),M(14074,'ft8','FT8'),M(14100,'bake','IBP-Bake'),M(14130,'info','Digital Voice'),M(14195,'info','DXpeditionen ±5'),M(14230,'info','SSTV/Bild'),M(14285,'qrp','SSB QRP'),M(14300,'notfunk','Notfunk (global)')],
- notes:['USB.','14 190–14 200 kHz bei DXpeditionen freihalten.']},
+ notes:['14 190–14 200 kHz bei DXpeditionen freihalten.']},
 {id:'17',name:'17 m',g:'KW',lo:18068,hi:18168,cls:{A:'750 W PEP'},
  segs:[S(18068,18095,'cw','CW'),S(18095,18105,'schmal','Digimodes'),S(18105,18109,'auto','Digimodes · automatisch'),S(18109,18111,'bake','IBP-Baken'),S(18111,18120,'auto','Digimodes · automatisch'),S(18120,18168,'ssb','Alle Modes · SSB')],
  mk:[M(18086,'qrp','CW QRP'),M(18100,'ft8','FT8'),M(18110,'bake','IBP-Bake'),M(18130,'qrp','SSB QRP'),M(18150,'info','Digital Voice'),M(18160,'notfunk','Notfunk')],
- notes:['Contestfreies Band.','USB.']},
+ notes:['Contestfreies Band.']},
 {id:'15',name:'15 m',g:'KW',lo:21000,hi:21450,cls:{A:'750 W PEP',E:'100 W PEP'},
  segs:[S(21000,21070,'cw','CW'),S(21070,21090,'schmal','Digimodes'),S(21090,21120,'auto','Digimodes · automatisch'),S(21120,21149,'schmal','Schmalband'),S(21149,21151,'bake','IBP-Baken'),S(21151,21450,'ssb','Alle Modes · SSB')],
  mk:[M(21055,'qrp','CW QRS'),M(21060,'qrp','CW QRP'),M(21074,'ft8','FT8'),M(21150,'bake','IBP-Bake'),M(21180,'info','Digital Voice'),M(21285,'qrp','SSB QRP'),M(21340,'info','SSTV/Bild'),M(21360,'notfunk','Notfunk (global)')],
- notes:['USB.']},
+ notes:[]},
 {id:'12',name:'12 m',g:'KW',lo:24890,hi:24990,cls:{A:'750 W PEP'},
  segs:[S(24890,24915,'cw','CW'),S(24915,24925,'schmal','Digimodes'),S(24925,24929,'auto','Digimodes · automatisch'),S(24929,24931,'bake','IBP-Baken'),S(24931,24940,'auto','Digimodes · automatisch'),S(24940,24990,'ssb','Alle Modes · SSB')],
  mk:[M(24906,'qrp','CW QRP'),M(24915,'ft8','FT8'),M(24930,'bake','IBP-Bake'),M(24950,'qrp','SSB QRP'),M(24960,'info','Digital Voice')],
- notes:['Contestfreies Band.','USB.']},
+ notes:['Contestfreies Band.']},
 {id:'10',name:'10 m',g:'KW',lo:28000,hi:29700,cls:{A:'750 W PEP',E:'100 W PEP',N:'10 W ERP'},
  segs:[S(28000,28070,'cw','CW'),S(28070,28120,'schmal','Digimodes'),S(28120,28150,'auto','Digimodes · automatisch'),S(28150,28190,'schmal','Schmalband'),S(28190,28225,'bake','IBP- und Dauerbaken'),S(28225,28300,'bake','Bakenbereich (alle Modes)'),S(28300,28320,'auto','Digimodes · automatisch'),S(28320,29000,'ssb','Alle Modes · SSB'),S(29000,29100,'allmode','Alle Modes · auch AM/FM'),S(29100,29200,'fm','FM Simplex · 10-kHz-Raster'),S(29200,29300,'auto','Digimodes · automatisch'),S(29300,29510,'sat','Satelliten'),S(29510,29520,'guard','Schutzkanal'),S(29520,29590,'relais','Relais-Eingaben RH1–RH8'),S(29590,29605,'fm','FM-Anrufkanal'),S(29605,29615,'relais','Simplex-Papagei 29,610'),S(29615,29700,'relais','Relais-Ausgaben RH1–RH8')],
  mk:[M(28055,'qrp','CW QRS'),M(28060,'qrp','CW QRP'),M(28074,'ft8','FT8'),M(28200,'bake','IBP-Bake'),M(28330,'info','Digital Voice'),M(28360,'qrp','SSB QRP'),M(28680,'info','SSTV/Bild'),M(29600,'call','FM-Anruf','fm')],
@@ -86,4 +86,13 @@ const FW={
   '70':{430000:['n','NBFM · 12,5-kHz-Raster'],433000:['n','NBFM · max. 12 kHz'],433400:['n','NBFM · 25-kHz-Raster, max. 12 kHz'],434600:['n','NBFM · 12,5-kHz-Raster'],438650:['n','NBFM · ältere Relais teils noch breit, Relaisliste prüfen']}
 };
 
-if(typeof module!=='undefined') module.exports={KINDS,MODES,BANDS,FW};
+/* Grenzen der Dial-Frequenz für SSB-Sprache (IARU R1 KW-Bandplan 2020, Notes): Das Seitenband liegt bis etwa 2,7–3 kHz
+   neben der angezeigten Frequenz. LSB: Dial nicht tiefer als min, sonst liegt das Signal unterhalb des Phonie-Bereichs.
+   USB: Dial nicht höher als max (3 kHz unter der oberen Bandgrenze, 20–10 m; 60 m: 5363), sonst ragt es aus dem Band. */
+const DIAL={
+  '160':{sb:'LSB',min:1843},'80':{sb:'LSB',min:3603},'40':{sb:'LSB',min:7053},
+  '60':{sb:'USB',max:5363},'20':{sb:'USB',max:14347},'17':{sb:'USB',max:18165},'15':{sb:'USB',max:21447},
+  '12':{sb:'USB',max:24987},'10':{sb:'USB',max:29697}
+};
+
+if(typeof module!=='undefined') module.exports={KINDS,MODES,BANDS,FW,DIAL};

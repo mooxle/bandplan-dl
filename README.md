@@ -10,6 +10,7 @@ Interaktiver Amateurfunk-Bandplan für Deutschland als statische Webseite: KW (1
 - **Frequenzleiter pro Band.** Farbige Segmente; Relais-, Baken-, Satelliten- und Datenbereiche sind schraffiert (kein Simplex). Notfunkfrequenzen rot, Anruffrequenzen hervorgehoben, FT8-Dial-Frequenzen lila.
 - **„Hier kannst du funken“.** Pro Betriebsart die nutzbaren Bereiche, Anruf- und FT8-Frequenzen. Im FM-Modus zeigt jedes FM-Segment, ob nur NBFM (±2,5 kHz Hub) oder auch Breit-FM zulässig ist.
 - **Spickzettel.** Alle Bänder auf einen Blick, druckbar auf A4 (Browser-Druck).
+- **Dial-Grenzen für SSB.** Tiefste LSB- und höchste USB-Dial-Frequenz nach IARU (z. B. 7,053 bzw. 14,347 MHz), damit das Seitenband nicht aus dem Phonie-Bereich oder über die Bandgrenze ragt.
 - **Frequenz prüfen.** Eingabe in kHz (`7074`), MHz (`145,5`) oder Hz (`14074000`). Zeigt Segment, passende Betriebsarten, FM-Bandbreite und warnt vor Notfunk- und Bakenfrequenzen in der Nähe. `Enter` springt ins Band, `Esc` löscht.
 - **Direktlinks.** `#40` öffnet ein Band, `#f=7.074` prüft eine Frequenz, `#spick` öffnet den Spickzettel.
 - **Kopfbereich** wie bei MUF Muncher: UTC-Uhr mit Datum und Ortszeit, Hell/Dunkel-Umschalter (ohne eigene Wahl gilt die Systemeinstellung; die Wahl bleibt im Browser gespeichert) und die laufende Version mit Link zum Quellcode.
@@ -120,6 +121,10 @@ Versionen nach Semantic Versioning, Änderungen stehen in [`CHANGELOG.md`](CHANG
    ```bash
    gh release create vX.Y.Z --repo mooxle/bandplan-dl --title vX.Y.Z --notes "$(awk '/^## \[X.Y.Z\]/{f=1;next} /^## \[/{f=0} f && !/^\[[0-9]/' CHANGELOG.md)"
    ```
+
+## Danke
+
+- **Heinz, [DK5UR](https://www.qrz.com/db/DK5UR)**, für den Hinweis, neben der tiefsten LSB- auch die höchste USB-Dial-Frequenz anzuzeigen. Wer auf 14,350 MHz USB einstellt, sendet bis knapp 14,353 MHz, also außerhalb des Bandes (seit v1.2.0).
 
 ## Lizenz
 

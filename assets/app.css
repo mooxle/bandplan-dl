@@ -119,6 +119,8 @@ header.top{display:grid;grid-template-columns:1fr auto;grid-template-areas:"bran
 .pill.t-bake{border-color:var(--k-bake);color:var(--k-bake)}
 .pill.t-call{background:var(--accent-soft);border-color:var(--accent)}
 .pill.t-qrp,.pill.t-info{color:var(--muted)}
+.pill.t-dial{border:1.5px dashed var(--accent);color:var(--ink)}
+.pill.t-dial b{color:var(--accent)}
 
 aside.side{display:flex;flex-direction:column;gap:18px;position:sticky;top:calc(env(safe-area-inset-top, 0px) + 70px)}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 16px 14px}

@@ -2,6 +2,13 @@
 
 Alle nennenswerten Änderungen an Bandplan DL. Versionen nach [Semantic Versioning](https://semver.org/lang/de/): Patch für Korrekturen (auch an Bandplan-Daten), Minor für neue Funktionen, Major für grundlegende Umbauten.
 
+## [1.2.0] - 2026-10-22
+### Neu
+- Dial-Grenzen für SSB-Sprache nach IARU-R1-KW-Bandplan: höchste USB-Dial-Frequenz 3 kHz unter der oberen Bandgrenze (20 m 14,347 · 17 m 18,165 · 15 m 21,447 · 12 m 24,987 · 10 m 29,697 MHz; 60 m 5,363 MHz), tiefste LSB-Dial-Frequenz wie bisher (1,843 · 3,603 · 7,053 MHz). Sichtbar als gestrichelte Marke in der Frequenzleiter, unter „Hier kannst du funken“ und im Spickzettel; der Frequenz-Check warnt, wenn das Signal über die Bandgrenze bzw. unter den Phonie-Bereich ragen würde. Danke an Heinz, DK5UR, für die Anregung („Wie oft sieht man Kollegen auf 14.350 …“).
+
+### Geändert
+- Die Dial-Hinweise stehen jetzt als Daten (`DIAL` in `assets/data.js`, von `tools/validate.js` geprüft) statt als Freitext in den Band-Hinweisen; leere Hinweis-Karten werden ausgeblendet.
+
 ## [1.1.0] - 2026-10-22
 ### Neu
 - Eigenes Icon: Bandbalken aus vier farbigen Segmenten mit Frequenz-Zeiger, als Favicon (SVG), Apple-Touch-Icon für den Homescreen und als Marke vor dem Schriftzug im Kopf von Seite und Impressum. Ersetzt das bisherige Platzhalter-Favicon. Design, Farben und Pflege: [`docs/ICON.md`](docs/ICON.md).
@@ -28,5 +35,6 @@ Erstes Release.
 - Docker-Image (nginx, non-root) für den eigenen Betrieb.
 - Cache-Busting per Inhalts-Hash an jeder JS/CSS-Referenz, Build-Stempel (Commit und Datum) im Footer.
 
+[1.2.0]: https://github.com/mooxle/bandplan-dl/releases/tag/v1.2.0
 [1.1.0]: https://github.com/mooxle/bandplan-dl/releases/tag/v1.1.0
 [1.0.0]: https://github.com/mooxle/bandplan-dl/releases/tag/v1.0.0

@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 /* Konsistenzprüfung für assets/data.js: node tools/validate.js
    Prüft: Segmente lückenlos und aufsteigend über das ganze Band, bekannte Segmentarten,
-   Marken innerhalb des Bandes, FW-Schlüssel passen zu einer Segment-Untergrenze, Klassen gültig. */
+   Marken innerhalb des Bandes, FW-Schlüssel passen zu einer Segment-Untergrenze, Klassen gültig,
+   DIAL-Grenzen (SSB-Sprache) im Band und mit passendem Seitenband. */
 const path=require('path');
-const {KINDS,BANDS,FW}=require(path.join(__dirname,'..','assets','data.js'));
+const {KINDS,BANDS,FW,DIAL}=require(path.join(__dirname,'..','assets','data.js'));
 
 const errors=[];
 const err=(b,msg)=>errors.push(`${b}: ${msg}`);
@@ -38,6 +39,14 @@ for(const [id,map] of Object.entries(FW)){
     if(!b.segs.some(s=>s.lo===Number(lo))) err(id,`FW-Schlüssel ${lo} ist keine Segment-Untergrenze`);
     if(!['n','w'].includes(w)) err(id,`FW-Typ "${w}" bei ${lo}`);
   }
+}
+
+for(const [id,d] of Object.entries(DIAL)){
+  const b=BANDS.find(x=>x.id===id);
+  if(!b){err(id,'DIAL für unbekanntes Band');continue}
+  if(d.sb==='LSB'&&!(d.min>b.lo&&d.min<b.hi)) err(id,`DIAL LSB min ${d.min} nicht im Band`);
+  else if(d.sb==='USB'&&!(d.max>b.lo&&d.max<b.hi)) err(id,`DIAL USB max ${d.max} nicht im Band`);
+  else if(!['LSB','USB'].includes(d.sb)) err(id,`DIAL-Seitenband "${d.sb}"`);
 }
 
 if(errors.length){console.error(errors.join('\n'));console.error(`\n${errors.length} Fehler`);process.exit(1)}

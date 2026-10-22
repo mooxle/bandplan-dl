@@ -47,6 +47,15 @@ Der Frequenz-Check warnt bei Notfunk/Baken im Abstand von ±3 kHz (KW) bzw. ±12
 
 `FW[bandId][segmentLo] = ['n' | 'w', text]`. `n` = nur Schmalband-FM (NBFM, ±2,5 kHz Hub), `w` = Breit-FM (±5 kHz) zulässig. Schlüssel muss exakt die Untergrenze eines Segments sein (prüft `tools/validate.js`).
 
+### `DIAL` – Dial-Grenzen für SSB-Sprache
+
+`DIAL[bandId] = {sb:'LSB', min}` oder `{sb:'USB', max}`. Ein SSB-Signal liegt bis etwa 2,7–3 kHz neben der angezeigten Frequenz: bei LSB darunter, bei USB darüber. Deshalb nennt der IARU-R1-KW-Bandplan in seinen Notes
+
+- die **tiefste** LSB-Dial-Frequenz: 1843, 3603, 7053 kHz (darunter läge das Signal außerhalb des Phonie-Bereichs),
+- die **höchste** USB-Dial-Frequenz: 3 kHz unter der oberen Bandgrenze auf 20–10 m (14 347, 18 165, 21 447, 24 987, 29 697 kHz) und 5363 kHz auf 60 m.
+
+Die Seite zeigt die Grenze als gestrichelte Marke in der Frequenzleiter, unter „Hier kannst du funken“ und im Spickzettel (jeweils nur bei aktivem SSB) und warnt im Frequenz-Check, wenn eine Eingabe darüber bzw. knapp darunter liegt. Angeregt von Heinz, DK5UR.
+
 ## Quellen und Stand
 
 | Bereich | Quelle | Stand |

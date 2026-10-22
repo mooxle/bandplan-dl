@@ -1,6 +1,6 @@
 /* Bandplan DL – Logik (Rendering, Frequenz-Check, Zustand). Daten kommen aus data.js. */
 
-const VERSION='1.1.0';  // bei jedem Release erhöhen, zusammen mit CHANGELOG.md (siehe README, „Release erstellen“)
+const VERSION='1.2.0';  // bei jedem Release erhöhen, zusammen mit CHANGELOG.md (siehe README, „Release erstellen“)
 
 /* ---------- Helfer ---------- */
 const fwOf=(b,s)=>(FW[b.id]||{})[s.lo];
@@ -66,7 +66,18 @@ function showMarker(m){
   const a=active();
   if(m.t==='ft8') return a.includes('ft8');
   if(m.t==='call') return a.includes(m.mode);
+  if(m.t==='dial') return a.includes('ssb');
   return true;
+}
+/* Dial-Grenze für SSB-Sprache (DIAL in data.js) als Marke in der Leiter und als Hinweis bei SSB */
+function dialMarks(b){
+  const d=DIAL[b.id]; if(!d) return [];
+  return d.sb==='LSB'?[M(d.min,'dial','LSB-Sprache: Dial nicht tiefer')]:[M(d.max,'dial','USB-Sprache: Dial nicht höher')];
+}
+function dialHint(b,compact){
+  const d=DIAL[b.id]; if(!d) return '';
+  if(d.sb==='LSB') return compact?`<em>LSB · Dial ab ${fmt(d.min)}</em>`:`<em>LSB · Dial nicht unter ${fmt(d.min)}, das Signal liegt bis ca. 3 kHz darunter</em>`;
+  return compact?`<em>USB · Dial bis ${fmt(d.max)}</em>`:`<em>USB · Dial höchstens ${fmt(d.max)}, sonst ragt das Signal über die Bandgrenze ${fmt(b.hi)}</em>`;
 }
 function fwBadge(b,s){const f=fwOf(b,s);if(!f||!active().includes('fm'))return '';return `<div class="fwb ${f[0]}">${esc(f[1])}</div>`}
 function fmWidth(b){
@@ -84,6 +95,7 @@ function goRows(b,compact){
     else{
       const r=sm[m.id];
       if(r.ranges.length){val=r.ranges.map(x=>`<span>${rng(x.lo,x.hi)}</span>`).join('');
+        if(m.id==='ssb') val+=dialHint(b,compact);
         if(r.calls.length) val+=`<em>Anruf ${r.calls.map(c=>fmt(c.f)).join(', ')}</em>`;
         if(m.id==='fm') val+=fmWidth(b);
         if(m.id==='cw'&&!compact) val+='<em>CW ist überall erlaubt, außer in Bakenbereichen</em>';
@@ -133,15 +145,16 @@ function renderBands(){
 function legend(){
   const ks=['cw','schmal','ssb','allmode','fm','relais','bake','sat'];
   return ks.map(k=>`<div class="${KINDS[k].ex?'ex':''}" style="--k:var(${KINDS[k].c})"><i></i>${KINDS[k].n}</div>`).join('')
-    +`<div><span class="fwb n">NBFM</span>Schmal, ±2,5 kHz Hub</div><div><span class="fwb w">Breit</span>Breit-FM, ±5 kHz zulässig</div>`;
+    +`<div><span class="fwb n">NBFM</span>Schmal, ±2,5 kHz Hub</div><div><span class="fwb w">Breit</span>Breit-FM, ±5 kHz zulässig</div>`
+    +`<div><i style="background:none;border:1.5px dashed var(--accent);border-radius:999px"></i>Dial-Grenze SSB-Sprache</div>`;
 }
 function renderBand(){
   const b=BANDS.find(x=>x.id===state.band), span=b.hi-b.lo;
-  const last=b.segs[b.segs.length-1];
+  const last=b.segs[b.segs.length-1], marks=b.mk.concat(dialMarks(b));
   let lad='';
   b.segs.forEach(s=>{
     const K=KINDS[s.k], r=relevant(b,s), h=46+Math.round((s.hi-s.lo)/span*300);
-    const mk=b.mk.filter(m=>m.f>=s.lo&&(m.f<s.hi||(m.f===s.hi&&s===last))&&showMarker(m));
+    const mk=marks.filter(m=>m.f>=s.lo&&(m.f<s.hi||(m.f===s.hi&&s===last))&&showMarker(m));
     const hit=state.hit&&state.hit.band===b.id&&state.hit.k>=s.lo&&(state.hit.k<s.hi||s===last);
     lad+=`<div role="listitem" class="rung ${K.ex?'ex':''} ${r==='dim'?'dim':''} ${hit?'hit':''}" style="--k:var(${K.c});min-height:${h}px">
       <div class="rf">${fmt(s.lo)}</div><div class="rbar"></div>
@@ -162,7 +175,7 @@ function renderBand(){
     <aside class="side">
       <div class="card"><h3>Hier kannst du funken · MHz</h3><div class="go">${goRows(b,false)}</div></div>
       ${keep?`<div class="card"><h3>Freihalten</h3><div class="keep">${keep}</div></div>`:''}
-      <div class="card"><h3>Hinweise ${b.name}</h3><ul class="notes">${b.notes.map(n=>`<li>${esc(n)}</li>`).join('')}</ul></div>
+      ${b.notes.length?`<div class="card"><h3>Hinweise ${b.name}</h3><ul class="notes">${b.notes.map(n=>`<li>${esc(n)}</li>`).join('')}</ul></div>`:''}
       <div class="card"><h3>Legende</h3><div class="legend">${legend()}</div></div>
     </aside></section>`;
 }
@@ -201,6 +214,9 @@ function check(raw){
   const K=KINDS[s.k];
   const tol=b.g==='KW'?3:12.5;
   const warns=b.mk.filter(m=>(m.t==='notfunk'||m.t==='bake')&&Math.abs(m.f-k)<=tol).map(m=>m.t==='notfunk'?`Notfunk-Frequenz ${fmt(m.f)} in der Nähe – nur im Notfall belegen.`:`Bake auf ${fmt(m.f)} – nicht senden.`);
+  const d=DIAL[b.id];
+  if(d&&d.max&&k>d.max) warns.push(`USB-Sprache: Dial höchstens ${fmt(d.max)} – auf ${fmt(k)} ragt das Signal über die Bandgrenze ${fmt(b.hi)}.`);
+  if(d&&d.min&&k<d.min&&k>=d.min-10) warns.push(`LSB-Sprache: Dial nicht unter ${fmt(d.min)} – auf ${fmt(k)} liegt das Signal unterhalb des Phonie-Bereichs.`);
   if(!allowed(b)) warns.unshift(`${b.name} ist für Klasse ${state.cls} nicht zugelassen.`);
   const modes=K.ex?'Hier kein eigener Betrieb.':'Passend für: '+K.modes.map(m=>MODES.find(x=>x.id===m).n).join(', ')+(b.mk.some(m=>m.t==='ft8'&&m.f>=s.lo&&m.f<s.hi)?', FT8':'');
   const fw=fwOf(b,s);
