@@ -2,7 +2,7 @@
 
 Alle nennenswerten Änderungen an Bandplan DL. Versionen nach [Semantic Versioning](https://semver.org/lang/de/): Patch für Korrekturen (auch an Bandplan-Daten), Minor für neue Funktionen, Major für grundlegende Umbauten.
 
-## [Unreleased]
+## [1.4.1] - 2026-11-03
 ### Geändert
 - Die Begründung zu den SSB-Dial-Grenzen ist jetzt eine vollständige Frage, z. B. „Warum SSB-Dial höchstens 14,347? …“ statt nur „Warum? …“. In der Karte „Hinweise“ fehlte vorher der Bezug zur SSB-Zeile darüber. Danke an Philipp, DA2PK.
 
@@ -70,6 +70,7 @@ Erstes Release.
 - Docker-Image (nginx, non-root) für den eigenen Betrieb.
 - Cache-Busting per Inhalts-Hash an jeder JS/CSS-Referenz, Build-Stempel (Commit und Datum) im Footer.
 
+[1.4.1]: https://github.com/mooxle/bandplan-dl/releases/tag/v1.4.1
 [1.4.0]: https://github.com/mooxle/bandplan-dl/releases/tag/v1.4.0
 [1.3.3]: https://github.com/mooxle/bandplan-dl/releases/tag/v1.3.3
 [1.3.2]: https://github.com/mooxle/bandplan-dl/releases/tag/v1.3.2
