@@ -83,8 +83,9 @@ function dialMarks(b){
 /* Warum: Das Gerät zeigt die (unterdrückte) Trägerfrequenz, das Seitenband liegt bis ca. 2,7 kHz daneben. */
 function dialWhy(b){
   const d=DIAL[b.id]; if(!d) return '';
-  if(d.sb==='LSB') return `Warum? Bei SSB zeigt das Gerät die Trägerfrequenz, das LSB-Signal liegt bis ca. 2,7 kHz darunter. Auf ${fmt(d.min-2)} sendest du also ab ${fmt(d.min-4.7)} MHz, unterhalb des Phonie-Bereichs ab ${fmt(d.min-3)}. Deshalb Dial nicht unter ${fmt(d.min)}.`;
-  return `Warum? Bei SSB zeigt das Gerät die Trägerfrequenz, das USB-Signal liegt bis ca. 2,7 kHz darüber. Auf ${fmt(b.hi)} sendest du also bis ${fmt(b.hi+2.7)} MHz, außerhalb des Bandes. Deshalb Dial höchstens ${fmt(d.max)}.`;
+  // als vollständige Frage formuliert, damit der Hinweis auch ohne die SSB-Zeile darüber verständlich ist
+  if(d.sb==='LSB') return `Warum SSB-Dial nicht unter ${fmt(d.min)}? Das Gerät zeigt bei SSB die Trägerfrequenz, das LSB-Signal liegt bis ca. 2,7 kHz darunter. Auf ${fmt(d.min-2)} sendest du also ab ${fmt(d.min-4.7)} MHz, unterhalb des Phonie-Bereichs ab ${fmt(d.min-3)}.`;
+  return `Warum SSB-Dial höchstens ${fmt(d.max)}? Das Gerät zeigt bei SSB die Trägerfrequenz, das USB-Signal liegt bis ca. 2,7 kHz darüber. Auf ${fmt(b.hi)} sendest du also bis ${fmt(b.hi+2.7)} MHz, außerhalb des Bandes.`;
 }
 function dialHint(b,compact){
   const d=DIAL[b.id]; if(!d) return '';

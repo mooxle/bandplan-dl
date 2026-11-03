@@ -135,6 +135,7 @@ Versionen nach Semantic Versioning, Änderungen stehen in [`CHANGELOG.md`](CHANG
 - **Heinz, [DK5UR](https://www.qrz.com/db/DK5UR)**, für den Hinweis, neben der tiefsten LSB- auch die höchste USB-Dial-Frequenz anzuzeigen. Wer auf 14,350 MHz USB einstellt, sendet bis knapp 14,353 MHz, also außerhalb des Bandes (seit v1.2.0).
 - **Nils, [DB6NL](https://www.qrz.com/db/DB6NL)**, für den Vorschlag, das 23-cm-Band aufzunehmen (seit v1.3.0).
 - **Tom, [DF5JL](https://www.qrz.com/db/DF5JL)**, für den Hinweis, dass die 10-m-FM-Relaiskanäle seit der IARU-R1-Generalkonferenz Wien 2026 bis 10 kHz Bandbreite haben, und für seinen [vereinfachten KW-Bandplan für DL](https://www.darc.de/fileadmin/filemounts/referate/hf/Dokumente/Bandplan_DL_vereinfacht_v3.01.pdf) (seit v1.3.2).
+- **Philipp, [DA2PK](https://www.qrz.com/db/DA2PK)**, für den Hinweis, dass dem „Warum?“ in den Band-Hinweisen die Frage fehlte.
 
 ## Lizenz
 

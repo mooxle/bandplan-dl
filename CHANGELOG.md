@@ -2,6 +2,10 @@
 
 Alle nennenswerten Änderungen an Bandplan DL. Versionen nach [Semantic Versioning](https://semver.org/lang/de/): Patch für Korrekturen (auch an Bandplan-Daten), Minor für neue Funktionen, Major für grundlegende Umbauten.
 
+## [Unreleased]
+### Geändert
+- Die Begründung zu den SSB-Dial-Grenzen ist jetzt eine vollständige Frage, z. B. „Warum SSB-Dial höchstens 14,347? …“ statt nur „Warum? …“. In der Karte „Hinweise“ fehlte vorher der Bezug zur SSB-Zeile darüber. Danke an Philipp, DA2PK.
+
 ## [1.4.0] - 2026-11-03
 ### Neu
 - Als App installierbar in Edge, Chrome und auf Android: Web-App-Manifest (`manifest.webmanifest`) mit Name, App-Icons (192/512 px, maskable für Android, SVG) und eigenem Fenster (`display: standalone`), dazu `theme-color` für hell und dunkel. iOS-Safari funktionierte schon vorher über das Apple-Touch-Icon. Danke an Tom, DF5JL, für den Hinweis auf die WebApp-Nutzung in Edge.
