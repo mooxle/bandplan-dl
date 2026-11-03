@@ -3,5 +3,6 @@
 !nginx.conf
 !index.html
 !impressum.html
+!manifest.webmanifest
 !assets/
 !tools/build.sh

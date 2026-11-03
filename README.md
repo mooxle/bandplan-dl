@@ -13,6 +13,7 @@ Interaktiver Amateurfunk-Bandplan für Deutschland als statische Webseite: KW (1
 - **Dial-Grenzen für SSB.** Tiefste LSB- und höchste USB-Dial-Frequenz nach IARU (z. B. 7,053 bzw. 14,347 MHz), damit das Seitenband nicht aus dem Phonie-Bereich oder über die Bandgrenze ragt.
 - **Frequenz prüfen.** Eingabe in kHz (`7074`), MHz (`145,5`) oder Hz (`14074000`). Zeigt Segment, passende Betriebsarten, FM-Bandbreite und warnt vor Notfunk- und Bakenfrequenzen in der Nähe. `Enter` springt ins Band, `Esc` löscht.
 - **Direktlinks.** `#40` öffnet ein Band, `#f=7.074` prüft eine Frequenz, `#spick` öffnet den Spickzettel.
+- **Als App installierbar.** iPhone/iPad: Safari → Teilen → „Zum Home-Bildschirm“. Edge/Chrome (Windows, macOS, Linux, Android): Menü → „App installieren“ bzw. „Als App installieren“. Startet dann mit eigenem Icon in einem eigenen Fenster.
 - **Kopfbereich** wie bei MUF Muncher: UTC-Uhr mit Datum und Ortszeit, Hell/Dunkel-Umschalter (ohne eigene Wahl gilt die Systemeinstellung; die Wahl bleibt im Browser gespeichert) und die laufende Version mit Link zum Quellcode.
 
 <p><img src="docs/screenshot-spickzettel.png" width="62%" alt="Spickzettel"> <img src="docs/screenshot-mobile.png" width="30%" alt="Mobilansicht 40 m"></p>
@@ -58,6 +59,10 @@ docker run -d --name bandplan-dl -p 8095:8080 --read-only --tmpfs /tmp bandplan-
 
 Hinter einem Reverse Proxy (Traefik, Caddy, nginx) einfach auf Port 8080 des Containers zeigen.
 
+### Als App (Web-App-Manifest)
+
+[`manifest.webmanifest`](manifest.webmanifest) liefert Name, Icons (192 px, 512 px, maskable 512 px für Android, SVG) und `display: standalone` für Edge, Chrome und Android. iOS-Safari nutzt stattdessen `apple-touch-icon` und den Seitentitel. Die CSP erlaubt das Manifest mit `manifest-src 'self'` (in `_headers` und `nginx.conf`). Offline-Betrieb (Service Worker) ist nicht eingebaut; ohne Netz öffnet sich die App nur, solange der Browser die Dateien im Cache hat.
+
 ### Offline
 
 Die Seite braucht keine externen Ressourcen: Die Schriften (Archivo, Chivo Mono) liegen selbst gehostet in `assets/fonts/` (Lizenz: SIL OFL 1.1, siehe `assets/fonts/LICENSE.md`). Es gibt keine Verbindung zu Google oder anderen Dritten; Besucher-IPs landen nirgends außer auf dem eigenen Server.
@@ -71,7 +76,8 @@ Die Seite braucht keine externen Ressourcen: Die Schriften (Archivo, Chivo Mono)
 | `assets/data.js` | Bandplan-Daten: Segmente, Marken, Klassen/Leistungen, Hinweise, FM-Bandbreiten |
 | `assets/app.js` | Rendering, Frequenz-Check, Zustand und Direktlinks |
 | `assets/app.css` | Styles inkl. Dark Mode und Druck |
-| `assets/icon.svg`, `assets/mark.svg`, `assets/apple-touch-icon.png` | Favicon, Marke vor dem Schriftzug, Homescreen-Icon ([`docs/ICON.md`](docs/ICON.md)) |
+| `assets/icon.svg`, `assets/mark.svg`, `assets/apple-touch-icon.png`, `assets/icon-192.png`, `assets/icon-512.png`, `assets/icon-maskable-512.png` | Favicon, Marke vor dem Schriftzug, Homescreen- und App-Icons ([`docs/ICON.md`](docs/ICON.md)) |
+| `manifest.webmanifest` | Web-App-Manifest für die Installation als App (Edge, Chrome, Android) |
 | `assets/fonts.css`, `assets/fonts/` | Selbst gehostete Schriften (woff2, Ausschnitte latin und latin-ext) |
 | `tools/validate.js` | Konsistenzprüfung der Daten |
 | `tools/build.sh` | Build nach `dist/` mit Cache-Busting |

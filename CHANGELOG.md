@@ -2,6 +2,13 @@
 
 Alle nennenswerten Änderungen an Bandplan DL. Versionen nach [Semantic Versioning](https://semver.org/lang/de/): Patch für Korrekturen (auch an Bandplan-Daten), Minor für neue Funktionen, Major für grundlegende Umbauten.
 
+## [1.4.0] - 2026-11-03
+### Neu
+- Als App installierbar in Edge, Chrome und auf Android: Web-App-Manifest (`manifest.webmanifest`) mit Name, App-Icons (192/512 px, maskable für Android, SVG) und eigenem Fenster (`display: standalone`), dazu `theme-color` für hell und dunkel. iOS-Safari funktionierte schon vorher über das Apple-Touch-Icon. Danke an Tom, DF5JL, für den Hinweis auf die WebApp-Nutzung in Edge.
+
+### Geändert
+- CSP erlaubt das Manifest (`manifest-src 'self'`) in `_headers` und `nginx.conf`; nginx liefert es mit `application/manifest+json` aus. Build und Docker-Image enthalten das Manifest.
+
 ## [1.3.3] - 2026-11-03
 ### Neu
 - 80 m: nationale DL-Notfunkfrequenz 3,643 MHz (Notfunkrunden und -Rundspruch) als eigene Marke „Notfunk DL“, neben 3,760 MHz („Notfunk R1“, IARU Region 1). Erklärung in der Karte „Hinweise“, Warnung im Frequenz-Check. Quelle: DARC „Vereinfachter KW-Bandplan für DL“ v3.01 (DF5JL).
@@ -59,6 +66,7 @@ Erstes Release.
 - Docker-Image (nginx, non-root) für den eigenen Betrieb.
 - Cache-Busting per Inhalts-Hash an jeder JS/CSS-Referenz, Build-Stempel (Commit und Datum) im Footer.
 
+[1.4.0]: https://github.com/mooxle/bandplan-dl/releases/tag/v1.4.0
 [1.3.3]: https://github.com/mooxle/bandplan-dl/releases/tag/v1.3.3
 [1.3.2]: https://github.com/mooxle/bandplan-dl/releases/tag/v1.3.2
 [1.3.1]: https://github.com/mooxle/bandplan-dl/releases/tag/v1.3.1

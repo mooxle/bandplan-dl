@@ -1,5 +1,5 @@
 #!/bin/sh
-# Baut die auslieferbare Seite nach <Zielordner> (Standard: dist): nur index.html, impressum.html und assets/.
+# Baut die auslieferbare Seite nach <Zielordner> (Standard: dist): nur index.html, impressum.html, manifest.webmanifest und assets/.
 # Genutzt vom Dockerfile und vom Cloudflare-Pages-Workflow (.github/workflows/deploy.yml).
 #
 # Cache-Busting: jede Referenz auf assets/*.js, *.css, *.svg und *.png in den HTML-Dateien bekommt ?v=<Hash des Inhalts>.
@@ -13,7 +13,7 @@ cd "$(dirname "$0")/.."
 
 rm -rf "$out"
 mkdir -p "$out"
-cp index.html impressum.html "$out/"
+cp index.html impressum.html manifest.webmanifest "$out/"
 cp -R assets "$out/assets"
 
 hash8() {

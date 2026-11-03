@@ -1,0 +1,18 @@
+{
+  "name": "Bandplan DL",
+  "short_name": "Bandplan DL",
+  "description": "Interaktiver Amateurfunk-Bandplan für Deutschland (IARU Region 1, AFuV): KW, 6 m, 2 m, 70 cm, 23 cm – nach Lizenzklasse und Betriebsart gefiltert, mit Frequenz-Check.",
+  "lang": "de",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#edf0f1",
+  "theme_color": "#131a1f",
+  "icons": [
+    {"src": "assets/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "assets/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"},
+    {"src": "assets/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"}
+  ]
+}

@@ -13,10 +13,12 @@ Die Grundidee stammt aus einem Entwurf mit Gemini (Balken mit Segmenten, Striche
 | Datei | Verwendung | Inhalt |
 |---|---|---|
 | [`assets/icon.svg`](../assets/icon.svg) | Favicon (`<link rel="icon">`) | dunkle Kachel `#131a1f` mit Rundung, aufgehellte Farben für Kontrast |
-| [`assets/apple-touch-icon.png`](../assets/apple-touch-icon.png) | Homescreen iOS/Android, 180 × 180 px | wie `icon.svg`, aber ohne Rundung (iOS rundet selbst) |
+| [`assets/apple-touch-icon.png`](../assets/apple-touch-icon.png) | Homescreen iOS, 180 × 180 px | wie `icon.svg`, aber ohne Rundung (iOS rundet selbst) |
+| [`assets/icon-192.png`](../assets/icon-192.png), [`assets/icon-512.png`](../assets/icon-512.png) | App-Icons im Manifest (Edge, Chrome, Android), `purpose: any` | wie `icon.svg` mit gerundeter Kachel, transparente Ecken |
+| [`assets/icon-maskable-512.png`](../assets/icon-maskable-512.png) | Android-App-Icon, `purpose: maskable` | volle dunkle Fläche, Inhalt auf 75 % verkleinert, damit er in der runden Safe Zone (80 %) bleibt |
 | [`assets/mark.svg`](../assets/mark.svg) | vor dem Schriftzug im Kopf von Seite und Impressum | nur Balken und Zeiger, transparent |
 
-Alle drei laufen im Build durch das Cache-Busting (`?v=<Hash>`), eine Änderung ist nach dem Deploy also sofort sichtbar.
+Die im HTML eingebundenen Dateien (`icon.svg`, `mark.svg`, `apple-touch-icon.png`) laufen im Build durch das Cache-Busting (`?v=<Hash>`), eine Änderung ist nach dem Deploy also sofort sichtbar. Die App-Icons lädt der Browser über `manifest.webmanifest`; sie sind nicht versioniert, und installierte Apps übernehmen ein neues Icon erst, wenn der Browser das Manifest neu einliest (das kann Tage dauern).
 
 ## Farben
 
