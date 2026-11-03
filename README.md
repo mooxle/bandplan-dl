@@ -103,6 +103,7 @@ Das Skript prüft, dass die Segmente jedes Band lückenlos abdecken, alle Marken
 - [IARU R1 HF Bandplan (gültig ab 16.10.2020)](https://www.iaru-r1.org/wp-content/uploads/2021/06/hf_r1_bandplan.pdf)
 - [IARU R1 VHF Handbook 10.03 (Feb. 2026)](https://www.iaru-r1.org/wp-content/uploads/2026/02/VHF_Handbook_V10_03_final.pdf)
 - [IARU R1 UHF Bandplan 2020 (via IRTS)](https://www.irts.ie/dnloads/IARU-R1-Bandplan-UHF-2020.pdf)
+- [DARC: Vereinfachter KW-Bandplan für DL v3.01 (Okt. 2026, DF5JL)](https://www.darc.de/fileadmin/filemounts/referate/hf/Dokumente/Bandplan_DL_vereinfacht_v3.01.pdf)
 - [AFuV Anlage 1](https://www.gesetze-im-internet.de/afuv_2005/anlage_1.html)
 - [DARC Notfunk-Frequenzen (2022-09-13)](https://www.mikrocontroller.net/attachment/570850/darc_notfunk_Notfunkfrequenzen_2022-09-13.pdf)
 
@@ -127,6 +128,7 @@ Versionen nach Semantic Versioning, Änderungen stehen in [`CHANGELOG.md`](CHANG
 
 - **Heinz, [DK5UR](https://www.qrz.com/db/DK5UR)**, für den Hinweis, neben der tiefsten LSB- auch die höchste USB-Dial-Frequenz anzuzeigen. Wer auf 14,350 MHz USB einstellt, sendet bis knapp 14,353 MHz, also außerhalb des Bandes (seit v1.2.0).
 - **Nils, [DB6NL](https://www.qrz.com/db/DB6NL)**, für den Vorschlag, das 23-cm-Band aufzunehmen (seit v1.3.0).
+- **Tom, [DF5JL](https://www.qrz.com/db/DF5JL)**, für den Hinweis, dass die 10-m-FM-Relaiskanäle seit der IARU-R1-Generalkonferenz Wien 2026 bis 10 kHz Bandbreite haben, und für seinen [vereinfachten KW-Bandplan für DL](https://www.darc.de/fileadmin/filemounts/referate/hf/Dokumente/Bandplan_DL_vereinfacht_v3.01.pdf) (seit v1.3.2).
 
 ## Lizenz
 

@@ -2,6 +2,10 @@
 
 Alle nennenswerten Änderungen an Bandplan DL. Versionen nach [Semantic Versioning](https://semver.org/lang/de/): Patch für Korrekturen (auch an Bandplan-Daten), Minor für neue Funktionen, Major für grundlegende Umbauten.
 
+## [1.3.2] - 2026-11-03
+### Geändert
+- 10 m: FM-Relaiskanäle, FM-Anruf 29,600 und Simplex-Papagei 29,610 (29,520–29,700 MHz) jetzt max. 10 kHz Bandbreite statt 6 kHz, nach Beschluss der IARU-R1-Generalkonferenz Wien 2026 (siehe DARC „Vereinfachter KW-Bandplan für DL“ v3.01). Neuer Hinweis in der Karte „Hinweise“ für 10 m. Danke an Tom, DF5JL, für den Hinweis.
+
 ## [1.3.1] - 2026-10-29
 ### Geändert
 - Neues Rufzeichen: DM6AX statt DA6MAX in Impressum, Footer und Lizenz. Der Kontakt-Link führt jetzt auf die QRZ-Seite von DM6AX.
@@ -51,6 +55,7 @@ Erstes Release.
 - Docker-Image (nginx, non-root) für den eigenen Betrieb.
 - Cache-Busting per Inhalts-Hash an jeder JS/CSS-Referenz, Build-Stempel (Commit und Datum) im Footer.
 
+[1.3.2]: https://github.com/mooxle/bandplan-dl/releases/tag/v1.3.2
 [1.3.1]: https://github.com/mooxle/bandplan-dl/releases/tag/v1.3.1
 [1.3.0]: https://github.com/mooxle/bandplan-dl/releases/tag/v1.3.0
 [1.2.1]: https://github.com/mooxle/bandplan-dl/releases/tag/v1.2.1

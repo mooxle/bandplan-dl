@@ -61,6 +61,7 @@ Die Seite zeigt die Grenze als gestrichelte Marke in der Frequenzleiter, unter �
 | Bereich | Quelle | Stand |
 |---|---|---|
 | KW-Segmente | IARU R1 HF Bandplan | gültig ab 16.10.2020 |
+| 10 m FM-Relais/Anruf/Simplex 29,520–29,700: max. 10 kHz | IARU-R1-Generalkonferenz Wien 2026, DARC „Vereinfachter KW-Bandplan für DL“ v3.01 (DF5JL) | Okt. 2026 |
 | 6 m, 2 m | IARU R1 VHF Handbook 10.03 | Feb. 2026 |
 | 70 cm | IARU R1 VHF Handbook 10.03 / UHF-Bandplan 2020 | Feb. 2026 |
 | 23 cm | IARU R1 VHF Handbook 10.03, Abschnitt 1200–1300 MHz | Feb. 2026 |
