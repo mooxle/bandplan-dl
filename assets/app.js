@@ -1,6 +1,6 @@
 /* Bandplan DL – Logik (Rendering, Frequenz-Check, Zustand). Daten kommen aus data.js. */
 
-const VERSION='1.3.2';  // bei jedem Release erhöhen, zusammen mit CHANGELOG.md (siehe README, „Release erstellen“)
+const VERSION='1.3.3';  // bei jedem Release erhöhen, zusammen mit CHANGELOG.md (siehe README, „Release erstellen“)
 
 /* ---------- Helfer ---------- */
 const fwOf=(b,s)=>(FW[b.id]||{})[s.lo];

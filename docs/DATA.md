@@ -66,7 +66,8 @@ Die Seite zeigt die Grenze als gestrichelte Marke in der Frequenzleiter, unter �
 | 70 cm | IARU R1 VHF Handbook 10.03 / UHF-Bandplan 2020 | Feb. 2026 |
 | 23 cm | IARU R1 VHF Handbook 10.03, Abschnitt 1200–1300 MHz | Feb. 2026 |
 | Klassen, Leistungen, Bandbreiten | AFuV Anlage 1 | Fassung 2024, geprüft 21.10.2026 |
-| Notfunk | DARC-Notfunkreferat | 13.09.2022 |
+| Notfunk | DARC-Notfunkreferat (IARU-R1-Frequenzen) | 13.09.2022 |
+| Notfunk 80 m DL 3,643 MHz | DARC „Vereinfachter KW-Bandplan für DL“ v3.01 (DF5JL), DARC-Notfunk-Rundsprüche | Okt. 2026 |
 
 ## Bewusste Vereinfachungen
 
